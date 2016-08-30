@@ -1,0 +1,24 @@
+: ${ac_cv_c_cross='yes'}
+: ${ac_cv_func_sel_types_match='yes'}
+: ${ac_cv_func_vsprintf='yes'}
+: ${ac_cv_header_memory_h='yes'}
+: ${ac_cv_header_netinet_in_h='yes'}
+: ${ac_cv_header_stdc='no'}
+: ${ac_cv_header_string_h='yes'}
+: ${ac_cv_header_sys_resource_h='yes'}
+: ${ac_cv_header_sys_rusage_h='no'}
+: ${ac_cv_header_sys_socket_h='yes'}
+: ${ac_cv_header_sys_time_h='yes'}
+: ${ac_cv_header_ucbinclude_sys_resource_h='no'}
+: ${ac_cv_lib_nsl='yes'}
+: ${ac_cv_lib_objc='yes'}
+: ${ac_cv_lib_socket='yes'}
+: ${ac_cv_path_install='./install.sh -c'}
+: ${ac_cv_prog_CC='gcc'}
+: ${ac_cv_prog_CPP='gcc -E'}
+: ${ac_cv_prog_RANLIB=':'}
+: ${ac_cv_prog_gcc='yes'}
+: ${ac_cv_prog_gcc_g='yes'}
+on to the cache file if you give it the
+# --recheck option to rerun configure.
+#

@@ -1,0 +1,1802 @@
+This is Info file libobjects.info, produced by Makeinfo-1.55 from the
+input file ./libobjects.texi.
+
+START-INFO-DIR-ENTRY
+* Libobjects::                      The GNU Objective C Class Library.
+END-INFO-DIR-ENTRY
+
+   This file documents the features and implementation of The GNU
+Objective-C class library.
+
+   Copyright (C) 1993 Free Software Foundation, Inc.
+
+   Permission is granted to make and distribute verbatim copies of this
+manual provided the copyright notice and this permission notice are
+preserved on all copies.
+
+   Permission is granted to copy and distribute modified versions of
+this manual under the conditions for verbatim copying, provided also
+that the section entitled "GNU Library General Public License" is
+included exactly as in the original, and provided that the entire
+resulting derived work is distributed under the terms of a permission
+notice identical to this one.
+
+   Permission is granted to copy and distribute translations of this
+manual into another language, under the above conditions for modified
+versions, except that the section entitled "GNU Library General Public
+License" and this permission notice may be included in translations
+approved by the Free Software Foundation instead of in the original
+English.
+
+
+File: libobjects.info,  Node: Top,  Next: Copying,  Up: (DIR)
+
+Libobjects
+**********
+
+   This manual documents how to install and use the GNU Objective-C
+Class Library (or `libobjects'), version {No Value For
+"LIBOBJECTS_VERSION"}, for use with `gcc' version {No Value For
+"GCC_VERSION"}.
+
+   It is nothing but a skeleton now, mostly containing rough notes.  In
+the future it will be fleshed out and the text will be polished.
+
+* Menu:
+
+* Copying::	    GNU Library Public License says how you can copy
+                    and share libobjects.
+* Contributors::    People who have contributed to libobjects.
+* Installation::    How to configure, compile and install libobjects.
+* Trouble::         If you have trouble installing libobjects.
+
+* Overview::        libobjects in brief.
+* Organization::    The heirarchy of protocols and classes.
+* Conventions::     Stylistic conventions and design philosophy.
+* Content Types::   Collections can contain C types as well as objects.
+
+* Creating::        Creating a collection.
+* Freeing::         Freeing a collection or its elements.
+* Adding::          Adding elements to a collection.
+* Removing::        Removing elements from a collection.
+* Replacing::       Replacing elements in a collection.
+* Enumerating::     Performing an operation with all elements.
+* Duplicating::     Making a copy of a collection.
+* Archiving::       Writing (and reading) a collection to (from) a file.
+* Querying::        Asking questions about a collection and its contents.
+* Sorting::         Sorting the contents of a collection.
+
+* Classes::         Choosing the class with the features you need.
+
+* Projects::	    To do list and questions for users.
+
+* Protocol Index::
+* Class Index::
+* Method Function Macro Index::
+* Concept Index::
+
+
+File: libobjects.info,  Node: Copying,  Next: Contributors,  Prev: Top,  Up: Top
+
+Copying
+*******
+
+   See the file `COPYING.LIB'.
+
+
+File: libobjects.info,  Node: Contributors,  Next: Installation,  Prev: Copying,  Up: Top
+
+Contributors to GNU Objective-C Collection library
+**************************************************
+
+   * Andrew McCallum <mccallum@gnu.ai.mit.edu> designed the protocol and
+     class heirarchies, and wrote the otherwise unattributed classes.
+
+   * Kresten Krab Thorup <Kresten_Thorup@NeXT.COM> made libobjects
+     possible by writing the GNU Objective-C runtime.  He also
+     contributed the GapArray and Storage classes.  He also wrote
+     patches to texinfo that make `deftypemethod' possible.
+
+   * Adam Fedor <fedor@boulder.colorado.edu> wrote the NXStringTable
+     class.
+
+   * Paul Kunz <Paul_Kunz@slac.stanford.edu> did a lot to fix the List
+     class.
+
+   * Kresten Krab Thorup <krab@iesd.auc.dk>, Paul Burchard
+     <burchard@geom.umn.edu>, Paul Kunz <Paul_Kunz@slac.stanford.edu>,
+     Geoffery Knauth <gsk@marble.com>, Steve Naroff <snaroff@next.com>,
+     Richard Stallman <rms@gnu.ai.mit.edu> and others contributed to
+     discussions about the library.
+
+
+File: libobjects.info,  Node: Installation,  Next: Trouble,  Prev: Contributors,  Up: Top
+
+Installing GNU Objective-C Class Library
+****************************************
+
+   To compile and install `libobjects':
+
+  1. Install `gcc'.  The library requires gcc version
+     2.6.1 or later.
+
+  2. Configure the package for your system.  In the directory that this
+     file is in, type `./configure'.  If you're using `csh' on an old
+     version of System V, you might need to type `sh configure' instead
+     to prevent `csh' from trying to execute `configure' itself.
+
+     If you are compiling the library for a NeXT machine, you have the
+     choice of using either the GNU or the NeXT Objective C runtime.
+     You can specify this by setting CFLAGS.  For example:
+          CFLAGS=-fgnu-runtime ./configure
+
+     The `configure' shell script attempts to guess correct values for
+     various system-dependent variables used during compilation, and
+     creates the Makefile(s) (one in each subdirectory of the source
+     directory).  In some packages it creates a C header file
+     containing system-dependent definitions.  It also creates a file
+     `config.status' that you can run in the future to recreate the
+     current configuration.
+
+     Running `configure' takes less than a minute or two.  While it is
+     running, it prints some messages that tell what it is doing.  If
+     you don't want to see the messages, run `configure' with its
+     standard output redirected to `/dev/null'; for example:
+          ./configure >/dev/null
+
+     To compile the package in a different directory from the one
+     containing the source code, you must use a version of make that
+     supports the VPATH variable, such as GNU make.  `cd' to the
+     directory where you want the object files and executables to go
+     and run `configure'.  `configure' automatically checks for the
+     source code in the directory that `configure' is in and in `..'.
+     If for some reason `configure' is not in the source code directory
+     that you are configuring, then it will report that it can't find
+     the source code.  In that case, run `configure' with the option
+     `--srcdir=DIR', where DIR is the directory that contains the
+     source code.
+
+     By default, `make install' will install the package's files in
+     /usr/local/bin, /usr/local/lib, /usr/local/man, etc.  You can
+     specify an installation prefix other than /usr/local by giving
+     `configure' the option `--prefix=PATH'.  Alternately, you can do
+     so by giving a value for the `prefix' variable when you run
+     `make', e.g.,
+          make prefix=/usr/gnu
+
+     You can specify separate installation prefixes for
+     architecture-specific files and architecture-independent files.
+     If you give `configure' the option `--exec_prefix=PATH' or set the
+     `make' variable `exec_prefix' to PATH, the package will use PATH
+     as the prefix for installing programs and libraries.  Data files
+     and documentation will still use the regular prefix.  Normally,
+     all files are installed using the regular prefix.
+
+     You can tell `configure' to figure out the configuration for your
+     system, and record it in `config.status', without actually
+     configuring the package (creating `Makefile's and perhaps a
+     configuration header file).  To do this, give `configure' the
+     `--no-create' option.  Later, you can run `./config.status' to
+     actually configure the package.  This option is useful mainly in
+     `Makefile' rules for updating `config.status' and `Makefile'.  You
+     can also give `config.status' the `--recheck' option, which makes
+     it re-run `configure' with the same arguments you used before.
+     This is useful if you change `configure'.
+
+     `configure' ignores any other arguments that you give it.
+
+     If your system requires unusual options for compilation or linking
+     that `configure' doesn't know about, you can give `configure'
+     initial values for some variables by setting them in the
+     environment.  In Bourne-compatible shells, you can do that on the
+     command line like this:
+          CC='gcc -traditional' DEFS=-D_POSIX_SOURCE ./configure
+
+     The `make' variables that you might want to override with
+     environment variables when running `configure' are:
+
+     (For these variables, any value given in the environment overrides
+     the value that `configure' would choose:)
+    `CC'
+          C compiler program.  Default is `cc', or `gcc' if `gcc' is in
+          your PATH.
+
+    `INSTALL'
+          Program to use to install files.  Default is `install' if you
+          have it, `install.sh' otherwise.
+
+     (For these variables, any value given in the environment is added
+     to the value that `configure' chooses:)
+    `DEFS'
+          Configuration options, in the form `-Dfoo -Dbar ...'
+
+    `LIBS'
+          Libraries to link with, in the form `-lfoo -lbar ...'
+
+     If you need to do unusual things to compile the package, we
+     encourage you to figure out how `configure' could check whether to
+     do them, and mail diffs or instructions to the address given in
+     the `README' so we can include them in the next release.
+
+  3. Type `make' to compile the package.  If you want, you can override
+     the `make' variables `CFLAGS' and `LDFLAGS' like this:
+          	make CFLAGS=-O2 LDFLAGS=-s
+
+     You will get some warnings from `#warning' lines I've added to the
+     code.  Ignore them.
+
+     You may get some warnings like `stdobjects.m:0: warning:
+     `_OBJC_SELECTOR_TABLE' defined but not used'.  Ignore them.  They
+     are bogus warnings due to a bug in cc1obj.
+
+     You may get some warnings like `ar: filename BinaryTreeEltNode.o
+     truncated to BinaryTreeEltNo'.  Ignore them.
+
+  4. If you want to compile the self-tests, cd to `checks' and type
+     `make'.  If you want to compile the examples, cd to `examples' and
+     type `make'.
+
+  5. Type `make install' to install programs, data files, and
+     documentation.
+
+  6. You can remove the program binaries and object files from the
+     source directory by typing `make clean'.  To also remove the
+     Makefile(s), and `config.status' (all the files that `configure'
+     created), type `make distclean'.
+
+     The file `configure.in' is used as a template to create
+     `configure' by a program called `autoconf'.  You will only need it
+     if you want to regenerate `configure' using a newer version of
+     `autoconf'.
+
+
+
+File: libobjects.info,  Node: Trouble,  Next: Overview,  Prev: Installation,  Up: Top
+
+Trouble in Installation
+***********************
+
+   Try to fix the problem.  Send patches to mccallum@gnu.ai.mit.edu.
+
+   <<This section incomplete>>
+
+
+File: libobjects.info,  Node: Overview,  Next: Organization,  Prev: Trouble,  Up: Top
+
+Overview
+********
+
+   The GNU classes included in this version of the library fall into
+five categories: collections, magnitudes, streams, coders and remote
+messaging support.
+
+   * The collection objects all conform to the `Collecting' protocol.
+     Reading `./objects/Collecting.h' is a good place to start.
+     Protocols for collections that store their contents with keys and
+     with indices can be found in `./objects/KeyedCollecting.h' and
+     `./objects/IndexedCollecting.h' respectively.  Examples of generic
+     collections are `Set' and `Bag'.  The keyed collections are
+     `Dictionary' and `MappedCollector'.  The classes `Array', `Queue',
+     `GapArray', `LinkedList', `BinaryTree', `RBTree' and `SplayTree'
+     are all indexed collections.
+
+   * The useful magnitude classes are `Time' and `Random'.  The
+     `Random' class works in conjunction with pseudo-random number
+     generators that conform to the `RandomGenerating' protocol.  The
+     conforming class `RNGBerkeley' provides identical behavior to the
+     BSD random() function.  The class `RNGAdditiveCongruential' is an
+     implementation of the additive congruential method.
+
+   * Stream objects provide a consistent interface for reading and
+     writing bytes.  Read `./objects/Stream.h' to get the general idea.
+     `StdioStream' objects work with files, file descriptors, FILE
+     pointers and pipes to executables.  `MemoryStream' objects work
+     with memory buffers.
+
+   * Coders provide a formatted way of writing to Streams.  After a
+     coder is initialized with a stream, the coder can encode/decode
+     Objective C objects and C types.  See `./objects/Coder.h' for the
+     abstract superclass interface; see `./objects/Coding.h' for the
+     protocol adopted by objects that read and write themselves using
+     coders.  The currently available concrete coders are
+     `BinaryCoder', for reading and writing a compact stream of
+     illegible bytes, and `TextCoder', for reading and writing
+     human-readable text.
+
+     Coders and streams can be mixed and matched so that programmers can
+     choose the destination and the format separately.
+
+     Neither the stream or coder class heirarchies are very mature yet.
+     I threw them together because I needed them for remote object
+     messaging.
+
+   * The remote object messaging support classes are `Connection',
+     `Proxy', `ConnectedCoder', `Port' and `SocketPort'.
+
+
+File: libobjects.info,  Node: Organization,  Next: Conventions,  Prev: Overview,  Up: Top
+
+Organization
+************
+
+   The library is built around several protocols:
+
+   * The <Collecting> protocol is root of the collection protocol
+     heirarchy.  The <Collecting> protocol defines the most general
+     interface to a collection of elements.  Elements can be added,
+     removed, and replaced.  The contents can be tested, enumerated,
+     and enumerated through various filters.  Elements may be objects,
+     or any C type included in the "elt" union given in elt.h, but all
+     elements of a collection must be of the same C type.  (For
+     examples see Set and Bag.)
+
+   * The <KeyedCollecting> protocol inherits from the <Collecting>
+     protocol.  The <KeyedCollecting> protocol defines the interface to
+     a collection of elements that are accessible by a key, where the
+     key is some unique element.  Pairs of (key element, content
+     element) may be added, removed and replaced.  The keys and
+     contents may be tested, enumerated, and copied.  (For examples see
+     Dictionary and MappedCollector.)
+
+   * The <IndexedCollecting> protocol inherits from the
+     <KeyedCollecting> protocol.  The <IndexedCollecting> protocol
+     defines the interface to a collection of elements that are
+     accessible by a key that is an index, where the indeces in a
+     collection are a contiguous series of unsigned integers beginning
+     at 0.  This is the root of the protocol heirarchy for all
+     collections that hold their elements in some order.  Elements may
+     be accessed, inserted, replaced and removed by their index.  (For
+     examples see Array and LinkedList.)
+
+   * The <LinkedListComprising> protocol defines the interface to an
+     object that may be an element in a LinkedList.  LinkedList is a
+     collection object based on a doubly linked list.  (For an example
+     see LinkedListNode.)
+
+   * The <BinaryTreeComprising> protocol defines the interface to an
+     object that may be an element in a BinaryTree.  BinaryTree is a
+     collection object based on a binary trees.  (For an example see
+     BinaryTreeNode.)
+
+   Here is the object inheritance heirarchy.  All collection abtract
+superclasses (classes which are not usable without subclassing) end
+with "Collection"; all protocols end with "ing"; all collection
+protocols end with "Collecting".
+
+             Collection <Collecting>
+                 Set
+                     Bag
+                 KeyedCollection <KeyedCollecting>
+                     Dictionary
+                     MappedCollector
+                     IndexedCollection <IndexedCollecting>
+                         Array
+                             Stack
+                             GapArray
+                             CircularArray
+                                 Queue
+                             Heap
+                         LinkedList
+                         BinaryTree
+                         RBTree
+                         EltNodeCollector
+                         String
+              DelegatePool
+              LinkedListNode
+                  LinkedListEltNode
+              BinaryTreeNode
+                  BinaryTreeEltNode
+              RBTreeNode
+                  RBTreeEltNode
+              Stream
+                  StdioStream
+                  MemoryStream
+              Coder
+                  TextCoder
+                  BinaryCoder
+                      ConnectedCoder
+              Port <Coding>
+                  SocketPort
+              Connection
+              Proxy <Coding>
+              Magnitude
+                  Time
+              Random
+              RNGBerkeley <RandomGenerating>
+              RNGAdditiveCongruential <RandomGenerating>
+
+   <<This section unfinished.>>
+
+
+File: libobjects.info,  Node: Conventions,  Next: Content Types,  Prev: Organization,  Up: Top
+
+Stylistic Conventions and Design Philosophy
+*******************************************
+
+Stylistic Conventions
+=====================
+
+   * Objective-C source files have file extension `.m'. Both
+     C-compatibility header files and class declaration files have
+     extension `.h'.
+
+   * Objective-C class names begin with capital letters.  Multi-word
+     class names capitalize each word, with no underscore separation.
+
+   * Include files that define Objective-C classes begin with capital
+     letters (as do the names of the classes themselves).
+
+   * All protocols end with `ing'.  All collection protocols end with
+     `Collecting'.  All collection abtract superclasses (classes which
+     are not usable without subclassing) end with `Collection'.
+
+   * Include files that supply function prototypes for other C
+     functions are all lower case.
+
+   * Instance variables begin with an underscore, are all lower case,
+     and have underscores separating their component words.  The leading
+     underscore distinguishes them from local varibles defined inside
+     methods.
+
+   * All include files define a preprocessor variable __X_h_INCLUDE_GNU,
+     where X is the name of the file, and conditionally compile only if
+     this has not been already defined.
+
+   * The following macros and variables make the relevant version
+     numbers available:
+
+      - Macro: COLL_VERSION
+          The version number of the collection library.  Declared in
+          `coll/collstd.h'
+
+      - Macro: COLL_GCC_VERSION
+          The version number of the compiler used to compile the
+          collection library.  Declared in `coll/collstd.h'
+
+      - Variable: char[] coll_version
+          A string containing the version number of the collection
+          library.  Declared in `coll/collstd.h'
+
+      - Variable: char[] coll_gcc_version
+          A string containing the version number of the compiler used
+          to compile the collection library.  Declared in
+          `coll/collstd.h'
+
+The design philosophy.
+======================
+
+   Objective-C is not Smalltalk.  Differences that matter to the
+Collection heirarchy:
+
+   * There can be only one set of argument types with each selector.
+     (For instance in Objective-C we can't have "-(double)data" and
+     "-(char)data".  I can't stand it when some library that I'm forced
+     to load already defines a selector that I want to use with
+     different types.)  This isn't an issue in Smalltalk because
+     everything is an object.
+
+     I make the Collection method names a little more descriptive, while
+     keeping them close to Smalltalk.  (For instance I think there is a
+     good reason for using "-addObject:" instead of "-add:")
+
+   * We will want collections of int's, float's, and other non-Objects.
+     Using Objective C wrappers around these C primitive types (i.e.
+     Integer and Float objects) is not an efficient enough option for
+     all cases.
+
+     We could create two parallel heirarchies, one for Objects and one
+     for elements passed as void*, but since so much of the
+     functionality overlaps, I have merged them, and it doesn't
+     actually look all that bad.
+
+   * Objective C doesn't have Smalltalk Blocks.
+
+     Passing pointers to functions is a reasonable substitute.  This is
+     made easier with gcc's nested functions and the LAMBDA() macro
+     defined in coll/collstd.h.
+
+   * Smalltalk does automatic garbage collection; Objective C doesn't.
+
+     I think it should be made obvious which methods allocate a new
+     object.  Hence "-shallowCopyAs:[Bag class]" instead of "as:[Bag
+     class]".
+
+   * We have usable Collection classes (Set, Bag, Array, etc) with
+     functionality matching Smalltalk's objects, but there are good
+     reasons for not having the abstract superclass structure match
+     Smalltalk exactly.
+
+   <<This section unfinished.>>
+
+
+File: libobjects.info,  Node: Content Types,  Next: Creating,  Prev: Conventions,  Up: Top
+
+Content types
+*************
+
+   Collections can hold either objects or primitive C types.  More
+specifically, collections can hold any of the types in the `elt' union
+defined in `coll/elt.h'.  All contents of a collection must be of the
+same type.
+
+   You declare which type the collection will hold at collection
+initialization time, and the type can not be changed later.  You
+specify the type using the Objective-C `@encode()' directive.  You can
+find out the type held by a collection with the method
+`contentEncoding' (*note Querying::.).
+
+   Many operations are independent of the type the collection holds.
+For example the method `-(unsigned)count' returns the number of members
+in the collection.
+
+   Other operations need to take arguments of different types depending
+on whether the contents are objects or some other type.  In this case
+there will be two methods, distinguished by the words `Object' and
+`Element' in their method name.  For example, `-removeObject:anObject'
+vs `-(elt)removeElement:(elt)anElement'.
+
+   <<Unfinished.>>
+
+
+File: libobjects.info,  Node: Creating,  Next: Freeing,  Prev: Content Types,  Up: Top
+
+Creating a Collection
+*********************
+
+* Menu:
+
+* Basic Creating::
+* Keyed Creating::
+
+
+File: libobjects.info,  Node: Basic Creating,  Next: Keyed Creating,  Up: Creating
+
+Basic Creating
+==============
+
+ - Method on Collection:  -init
+
+ - Method on Collection:  -initEncoding: (const char *)CONTENTENCODING
+
+   Create with `alloc' and `init'.  Specify the type of contents using
+`initEncoding:'.  For example:
+
+     id arrayHoldingInts = [[Array alloc] initEncoding:@encode(int)];
+
+   <<This section unfinished.>>
+
+
+File: libobjects.info,  Node: Keyed Creating,  Prev: Basic Creating,  Up: Creating
+
+Keyed Creating
+==============
+
+
+File: libobjects.info,  Node: Freeing,  Next: Adding,  Prev: Creating,  Up: Top
+
+Freeing a Collection or its Elements
+************************************
+
+   You can free all the objects in a collection and empty it using
+`freeObjects'.  You can emtpy a collection without freeing the contents
+using `empty'.  You can free a collection without freeing the contents
+using `free'.
+
+   <<This section unfinished.>>
+
+
+File: libobjects.info,  Node: Adding,  Next: Removing,  Prev: Freeing,  Up: Top
+
+Adding Elements to a Collection
+*******************************
+
+   Talk about adding.
+
+* Menu:
+
+* Basic Adding::
+* Keyed Adding::
+* Indexed Adding::
+
+
+File: libobjects.info,  Node: Basic Adding,  Next: Keyed Adding,  Up: Adding
+
+Basic Adding
+============
+
+   Adding, adding if absent, adding a copy, adding all contents of
+another collection, adding contents if absent, adding with varargs.
+
+ - Method on Collection:  -addObject: NEWOBJECT
+ - Method on Collection:  -addElement: (elt)NEWELEMENT
+     Adds NEWOBJECT to the receiving collection.  Returns self.
+
+ - Method on Collection:  -addObjectIfAbsent: NEWOBJECT
+ - Method on Collection:  -addElementIfAbsent: (elt)NEWELEMENT
+     Adds NEWOBJECT to the receiving collection only if NEWOBJECT isn't
+     there already.  Returns self.
+
+ - Method on Collection:  -addContentsOf: (id <Collecting>)NEWOBJECT
+     Adds all the elements in ACOLLECTION to the receiving collection.
+     Returns self.
+
+ - Method on Collection:  -addContentsOfIfAbsent: (id
+          <Collecting>)NEWOBJECT
+     <<Undocumented>>  Returns self.
+
+ - Method on Collection:  -addObjectsCount: (unsigned)COUNT, ...
+ - Method on Collection:  -addElementsCount: (unsigned)COUNT, ...
+     <<Undocumented>>  Returns self.
+
+     Here is an example
+          id o1 = [[Foo alloc] init];
+          id o2 = [[Bar alloc] init];
+          id myArray = [[[Array alloc] init] addObjectsCount: 2, o1, o2];
+
+
+File: libobjects.info,  Node: Keyed Adding,  Next: Indexed Adding,  Prev: Basic Adding,  Up: Adding
+
+Keyed Adding
+============
+
+   If the collection's contents are accessible by a key, members can be
+inserted at a specified key.  See KeyedCollecting protocol.
+
+ - Method on KeyedCollection:  -insertObject: NEWCONTENTOBJECT atKey:
+          (elt)AKEY
+ - Method on KeyedCollection:  -insertElement: (elt)NEWCONTENTELEMENT
+          atKey: (elt)AKEY
+     <<Undocumented>>  returns self.
+
+
+File: libobjects.info,  Node: Indexed Adding,  Prev: Keyed Adding,  Up: Adding
+
+Indexed Adding
+==============
+
+   Furthermore, if the collections contents are accessible by an index
+(an unsigned integer key), members can be appended, prepended.  Inserted
+members push other members down to make room.  See IndexedCollecting
+protocol.
+
+ - Method on IndexedCollection:  -insertObject: NEWOBJECT atIndex:
+          (unsigned)INDEX
+ - Method on IndexedCollecting:  -insertElement: (elt)NEWELEMENT
+          atIndex: (unsigned)INDEX
+     <<Undocumented>>  returns self.
+
+ - Method on IndexedCollection:  -insertObject: NEWOBJECT before:
+          OLDOBJECT
+ - Method on IndexedCollecting:  -insertElement: (elt)NEWELEMENT
+          before: OLDOBJECT
+     <<Undocumented>>  returns self.
+
+ - Method on IndexedCollection:  -insertObject: NEWOBJECT after:
+          OLDOBJECT
+ - Method on IndexedCollecting:  -insertElement: (elt)NEWELEMENT after:
+          OLDOBJECT
+     <<Undocumented>>  returns self.
+
+ - Method on IndexedCollection:  insertContentsOf: (id
+          <Collecting>)ACOLLECTION atIndex: (unsigned)INDEX
+     <<Undocumented>>  returns self.
+
+ - Method on IndexedCollection:  -appendObject: NEWOBJECT
+ - Method on IndexedCollecting:  -appendElement: (elt)NEWELEMENT
+ - Method on IndexedCollection:  -prependObject: NEWOBJECT
+ - Method on IndexedCollecting:  -prependElement: (elt)NEWELEMENT
+     <<Undocumented>>  returns self.
+
+ - Method on IndexedCollection:  -appendContentsOf: (id
+          <Collecting>)ACOLLECTION
+ - Method on IndexedCollection:  -prependContentsOf: (id
+          <Collecting>)ACOLLECTION
+     <<Undocumented>>  returns self.
+
+   <<This section unfinished.>>
+
+
+File: libobjects.info,  Node: Removing,  Next: Replacing,  Prev: Adding,  Up: Top
+
+Removing Elements from a Collection
+***********************************
+
+   About removing...
+
+* Menu:
+
+* Basic Removing::
+* Keyed Removing::
+* Indexed Removing::
+
+
+File: libobjects.info,  Node: Basic Removing,  Next: Keyed Removing,  Up: Removing
+
+
+File: libobjects.info,  Node: Keyed Removing,  Next: Indexed Removing,  Prev: Basic Removing,  Up: Removing
+
+
+File: libobjects.info,  Node: Indexed Removing,  Prev: Keyed Removing,  Up: Removing
+
+   <<This section unfinished.>>
+
+
+File: libobjects.info,  Node: Replacing,  Next: Enumerating,  Prev: Removing,  Up: Top
+
+Replacing Elements in a Collection
+**********************************
+
+* Menu:
+
+* Basic Replacing::
+* Keyed Replacing::
+* Indexed Replacing::
+
+
+File: libobjects.info,  Node: Basic Replacing,  Next: Keyed Replacing,  Up: Replacing
+
+
+File: libobjects.info,  Node: Keyed Replacing,  Next: Indexed Replacing,  Prev: Basic Replacing,  Up: Replacing
+
+
+File: libobjects.info,  Node: Indexed Replacing,  Prev: Keyed Replacing,  Up: Replacing
+
+   <<This section unfinished.>>
+
+
+File: libobjects.info,  Node: Enumerating,  Next: Duplicating,  Prev: Replacing,  Up: Top
+
+Enumerating the Contents of a Collection
+****************************************
+
+   Enumeration methods allow you to perform a specified operation on the
+members of a collection.  You can operate on all the members, operate on
+all the members until a flag is set, operate only on the members that
+pass some test, or operate on the results of passing the members through
+a modifying function.  Each of the enumerators come in pairs: one method
+for enumerating in place, and another method that is "safe" for
+enumerating when the operation changes the contents of the receiving
+collection.  If the contents of the collection are changed during the
+enumeration you must use the "safe" methods.
+
+* Menu:
+
+* Safe vs Unsafe Enumerating::  Enumerations while changing the contents
+
+* Basic Enumerating::           Enumerations available for all collections
+* Keyed Enumerating::           Enumerations on collections with keys
+* Indexed Enumerating::         Enumerations on ordered collections
+
+* LAMBDA::                      Defining functions in place with LAMBDA()
+
+
+File: libobjects.info,  Node: Safe vs Unsafe Enumerating,  Next: Basic Enumerating,  Up: Enumerating
+
+Safe vs Unsafe Enumerating
+==========================
+
+   The simple enumerators operate on the collection in-place.  If the
+contents of the collection change during the enumeration, you must use
+the "safe" version of the enumerator instead.
+
+   It works by making a shallow copy of the receiver, performing the
+enumeration using the shallow copy, then freeing the shallow copy.
+
+   All enumerators have both "safe" and plain versions.
+
+   <<This section unfinished.>>
+
+
+File: libobjects.info,  Node: Basic Enumerating,  Next: Keyed Enumerating,  Prev: Safe vs Unsafe Enumerating,  Up: Enumerating
+
+Basic Enumerating
+=================
+
+   The most basic enumerator is
+
+ - Method on Collection:  -withObjectsCall: (void(*)(id))FUNC
+ - Method on Collection:  -safeWithObjectsCall: (void(*)(id))FUNC
+ - Method on Collection:  -withElementsCall: (void(*)(elt))FUNC
+ - Method on Collection:  -safeWithElementsCall: (void(*)(elt))FUNC
+     Calls the function FUNC with each the members of the collection.
+     Returns self.
+
+ - Method on Collection: (void*) -newEnumState
+
+ - Method on Collection:  -freeEnumState: (void**)ENUMSTATEPTR
+
+ - Method on Collection: (BOOL) -getNextObject: (id *)ANOBJECTPTR
+          withEnumState: (void**)ENUMSTATE
+ - Method on Collection: (BOOL) -getNextElement: (elt *)ANELEMENTPTR
+          withEnumState: (void**)ENUMSTATE
+
+     void print_first_difference (id coll1, id coll2)
+       {
+         void *enumState1, *enumState2;
+         id object1, object2;
+     
+         enumState1 = [coll1 newEnumState];
+         enumState2 = [coll2 newEnumState];
+         while ([coll1 getNextObject:&object1 withEnumState:&enumState1]
+                && [coll2 getNextObject:&object2 withEnumState:&enumState2])
+           {
+             if ([object1 compare:object2])
+               {
+                 [object1 printForDebugger];
+                 [object2 printForDebugger];
+               }
+           }
+         [coll1 freeEnumState:&enumState1];
+         [coll2 freeEnumState:&enumState2];
+       }
+
+ - Method on Collection:  -withElementsCall: (void(*)(elt))AFUNC
+          whileTrue: (BOOL*)FLAG
+ - Method on Collection:  -safeWithElementsCall: (void(*)(elt))AFUNC
+          whileTrue: (BOOL*)FLAG
+
+
+File: libobjects.info,  Node: Keyed Enumerating,  Next: Indexed Enumerating,  Prev: Basic Enumerating,  Up: Enumerating
+
+Keyed Enumerating
+=================
+
+
+File: libobjects.info,  Node: Indexed Enumerating,  Next: LAMBDA,  Prev: Keyed Enumerating,  Up: Enumerating
+
+Indexed Enumerating
+===================
+
+ - Method on IndexedCollection: (BOOL) -getPrevObject: (id *)
+          ANOBJECTPTR withEnumState: (void**)ENUMSTATE
+ - Method on IndexedCollection: (BOOL) -getPrevElement: (elt *)
+          ANELEMENTPTR withEnumState: (void**)ENUMSTATE
+
+ - Method on IndexedCollection:  -withObjectsInReverseCall:
+          (void(*)(id))AFUNC
+ - Method on IndexedCollection:  -safeWithObjectsInReverseCall:
+          (void(*)(id))AFUNC
+ - Method on IndexedCollection:  -withElementsInReverseCall:
+          (void(*)(elt))AFUNC
+ - Method on IndexedCollection:  -safeWithElementsInReverseCall:
+          (void(*)(elt))AFUNC
+
+ - Method on IndexedCollection:  -withObjectsInReverseCall:
+          (void(*)(id)) AFUNC whileTrue: (BOOL *)FLAG
+ - Method on IndexedCollection:  -safeWithObjectsInReverseCall:
+          (void(*)(id)) AFUNC whileTrue: (BOOL *)FLAG
+ - Method on IndexedCollection:  -withElementsInReverseCall:
+          (void(*)(elt)) AFUNC whileTrue: (BOOL *)FLAG
+ - Method on IndexedCollection:  -safeWithElementsInReverseCall:
+          (void(*)(elt)) AFUNC whileTrue: (BOOL *)FLAG
+
+ - Method on IndexedCollection:  -makeObjectsPerformInReverse: (SEL)
+          ASEL
+ - Method on IndexedCollection:  -safeMakeObjectsPerformInReverse:
+          (SEL) ASEL
+ - Method on IndexedCollection:  -makeObjectsPerformInReverse: (SEL)
+          ASEL with: ARGOBJECT
+ - Method on IndexedCollection:  -safeMakeObjectsPerformInReverse:
+          (SEL) ASEL with: ARGOBJECT
+
+
+File: libobjects.info,  Node: LAMBDA,  Prev: Indexed Enumerating,  Up: Enumerating
+
+Defining Functions In Place with LAMBDA()
+=========================================
+
+   NOTE:  The LAMBDA macro does not work on all systems.  We are waiting
+for a general fix.  You should avoid using it until then.
+
+   There may not already be a function that does the operation you want
+performed during an enumeration.  In this case you will have to write
+such a function yourself.
+
+   If the function will be used more than once, you should write it as C
+functions are usually defined.  However, if the function will only be
+used for this one enumeration and the function is small, using the
+`LAMBDA' macro may be easier and more clear.
+
+ - Macro: LAMBDA(RETTYPE, ARGS, BODY)
+     `LAMBDA' is a macro for defining a nested function and returning a
+     pointer to that function.  You can use `LAMBDA' wherever a
+     function pointer is required.  RETTYPE is the C type returned by
+     the function.  ARGS is the parenthesis-enclosed list of arguments
+     to the function.  (Declare them just like in an ANSI function
+     definition.)  BODY is the curly-bracket-enclosed body of the
+     function.
+
+     For example, you could create a pointer to a function that adds its
+     arguments like this:
+          LAMBDA(int, (int a, int b), {return a + b;})
+
+   `LAMBDA' is particularly convenient for enumeration methods because
+the macro can be placed in the position of the method argument.  For
+instance, you can write:
+       - fooMethod
+       {
+         id newColl;
+         ...
+         newColl = [self emptyCopyAs:[Array class]];
+         [self withObjectsCall:
+               LAMBDA(void, (id o), {[newColl addObject:[o copy]];})];
+         return self;
+       }
+   instead of writing:
+       - fooMethod
+       {
+         id newColl = [self emptyCopyAs:[Array class]];
+         void myTmpFunc(id o)
+           {
+             [newColl addObject:[o copy]];
+           }
+         ...
+         [self withObjectsCall:myTmpFunc];
+         return self;
+       }
+   In these examples, there may be many lines of code between the
+declarations at the top of the method and the `withObjectsCall:' at the
+bottom of the method.  Using `LAMBDA' allows you to declare the
+function where it is used, instead of arbitrarily far from where it is
+used.
+
+   The name `LAMBDA' comes from lambda calculus and LISP.
+
+   The `LAMBDA' macro and some similar macros are defined in
+`coll/collstd.h'.
+
+Filtered Enumerating
+====================
+
+Enumerating with Keyed Collections
+==================================
+
+Enumerating with Indexed Collections
+====================================
+
+   <<This section unfinished.>>
+
+
+File: libobjects.info,  Node: Duplicating,  Next: Archiving,  Prev: Enumerating,  Up: Top
+
+Duplicating
+***********
+
+   Talk about shallow and deep copies.
+
+   <<This section unfinished.>>
+
+
+File: libobjects.info,  Node: Archiving,  Next: Querying,  Prev: Duplicating,  Up: Top
+
+Archiving
+*********
+
+   You can write collections to a stream.  You can read them back in
+again.  Talk about the `-awake' method.
+
+ - Method on Collection:  -write: (TypedStream*)ASTREAM
+     <<Undocumented>>  Returns self.
+
+ - Method on Collection:  -read: (TypedStream*)ASTREAM
+     <<Undocumented>>  Returns self.
+
+   <<This section unfinished.>>
+
+
+File: libobjects.info,  Node: Querying,  Next: Sorting,  Prev: Archiving,  Up: Top
+
+Querying
+********
+
+   <<This section unfinished.>>
+
+* Menu:
+
+* Basic Querying::
+* Keyed Querying::
+* Indexed Querying::
+
+
+File: libobjects.info,  Node: Basic Querying,  Next: Keyed Querying,  Up: Querying
+
+Basic Querying
+==============
+
+ - Method on Collection: (BOOL) -isEmpty
+     Returns YES if the receiver contains no members; returns NO
+     otherwise.
+
+ - Method on Collection: (const char *) -contentEncoding
+     Returns a description of the C type that the receiving collection
+     can hold.  The description is a string of the form returned by the
+     Objective-C `@encode' directive.
+
+
+File: libobjects.info,  Node: Keyed Querying,  Next: Indexed Querying,  Prev: Basic Querying,  Up: Querying
+
+Keyed Querying
+==============
+
+
+File: libobjects.info,  Node: Indexed Querying,  Prev: Keyed Querying,  Up: Querying
+
+Indexed Querying
+================
+
+
+File: libobjects.info,  Node: Sorting,  Next: Classes,  Prev: Querying,  Up: Top
+
+Sorting
+*******
+
+   <<This section unfinished.>>
+
+
+File: libobjects.info,  Node: Classes,  Next: Projects,  Prev: Sorting,  Up: Top
+
+Choosing the Right Class
+************************
+
+   Talk about keys or no keys, ordered or not ordered.  Talk about the
+classes the require protocol-conforming objects as members.
+
+* Menu:
+
+* Set::
+* Bag::
+
+* Dictionary::
+* MappedCollector::
+
+* Array::
+* Stack::
+* Queue::
+* GapArray::
+
+* LinkedList::
+* BinaryTree::
+* RBTree::
+* SplayTree::
+* EltNodeCollector::
+
+* Collection::
+* KeyedCollection::
+* IndexedCollection::
+
+   <<This section unfinished.>>
+
+
+File: libobjects.info,  Node: Set,  Next: Bag,  Up: Classes
+
+Set
+===
+
+   <<This section unfinished.>>
+
+
+File: libobjects.info,  Node: Bag,  Next: Dictionary,  Prev: Set,  Up: Classes
+
+Bag
+===
+
+   A Bag is ...
+
+* Menu:
+
+* Basic Creating::
+* Freeing::
+* Bag Adding::
+* Basic Adding::
+* Keyed Adding::
+* Indexed Adding::
+* Bag Removing::
+* Basic Removing::
+* Keyed Removing::
+* Indexed Removing::
+* Basic Removing::
+* Keyed Removing::
+* Indexed Removing::
+* Basic Enumerating::
+* Keyed Enumerating::
+* Indexed Enumerating::
+
+
+File: libobjects.info,  Node: Bag Adding,  Next: Bag Removing,  Up: Bag
+
+ - Method on Bag:  -addObject: NEWOBJECT withOccurrences:
+          (unsigned)COUNT
+ - Method on Bag:  -addElement: (elt)NEWELEMENT withOccurrences:
+          (unsigned)COUNT
+
+
+File: libobjects.info,  Node: Bag Removing,  Prev: Bag Adding,  Up: Bag
+
+ - Method on Bag:  -removeObject: OLDOBJECT occurrences: (unsigned)COUNT
+ - Method on Bag:  -removeElement: (elt)OLDELEMENT occurrences:
+          (unsigned)COUNT
+
+   <<This section unfinished.>>
+
+
+File: libobjects.info,  Node: Dictionary,  Next: MappedCollector,  Prev: Bag,  Up: Classes
+
+Dictionary
+==========
+
+   A Dictionary is ...
+
+
+File: libobjects.info,  Node: MappedCollector,  Next: Array,  Prev: Dictionary,  Up: Classes
+
+MappedCollector
+===============
+
+   A MappedCollector is ...
+
+
+File: libobjects.info,  Node: Array,  Next: Stack,  Prev: MappedCollector,  Up: Classes
+
+Array
+=====
+
+   An Array is ...
+
+* Menu:
+
+* Array Capacity Management::
+* Basic Creating::
+* Freeing::
+* Basic Adding::
+* Keyed Adding::
+* Indexed Adding::
+* Basic Removing::
+* Keyed Removing::
+* Indexed Removing::
+* Basic Replacing::
+* Keyed Replacing::
+* Indexed Replacing::
+* Basic Enumerating::
+* Keyed Enumerating::
+* Indexed Enumerating::
+* Duplicating::
+* Archiving::
+* Basic Querying::
+* Keyed Querying::
+* Indexed Querying::
+
+
+File: libobjects.info,  Node: Array Capacity Management,  Up: Array
+
+Array Methods
+=============
+
+ - Method on Array: (unsigned) +defaultCapacity
+
+ - Method on Array: (unsigned) +defaultGrowFactor
+
+ - Method on Array:  -initEncoding: (const char *)
+     CONTENTENCODING capacity: (unsigned) ACAPACITY
+
+
+ - Method on Array:  -setCapacity: (unsigned) NEWCAPACITY
+
+ - Method on Array:  -setGrowFactor: (unsigned) ANUM
+
+
+File: libobjects.info,  Node: Stack,  Next: Queue,  Prev: Array,  Up: Classes
+
+Stack
+=====
+
+* Menu:
+
+* Stack Methods::
+* Array Capacity Management::
+* Basic Creating::
+* Freeing::
+* Basic Adding::
+* Keyed Adding::
+* Indexed Adding::
+* Basic Removing::
+* Keyed Removing::
+* Indexed Removing::
+* Basic Replacing::
+* Keyed Replacing::
+* Indexed Replacing::
+* Basic Enumerating::
+* Keyed Enumerating::
+* Indexed Enumerating::
+* Duplicating::
+* Archiving::
+* Basic Querying::
+* Keyed Querying::
+* Indexed Querying::
+
+
+File: libobjects.info,  Node: Stack Methods,  Up: Stack
+
+ - Method on Stack:  -pushObject: NEWOBJECT
+ - Method on Stack:  -pushElement: (elt)NEWELEMENT
+
+ - Method on Stack:  -popObject: NEWOBJECT
+ - Method on Stack:  -popElement: (elt)NEWELEMENT
+
+ - Method on Stack:  -topObject
+ - Method on Stack: (elt) -topElement
+
+ - Method on Stack:  -exchangeTop
+
+
+File: libobjects.info,  Node: Queue,  Next: GapArray,  Prev: Stack,  Up: Classes
+
+
+File: libobjects.info,  Node: GapArray,  Next: LinkedList,  Prev: Queue,  Up: Classes
+
+
+File: libobjects.info,  Node: LinkedList,  Next: BinaryTree,  Prev: GapArray,  Up: Classes
+
+
+File: libobjects.info,  Node: BinaryTree,  Next: RBTree,  Prev: LinkedList,  Up: Classes
+
+
+File: libobjects.info,  Node: RBTree,  Next: SplayTree,  Prev: BinaryTree,  Up: Classes
+
+
+File: libobjects.info,  Node: SplayTree,  Next: EltNodeCollector,  Prev: RBTree,  Up: Classes
+
+
+File: libobjects.info,  Node: EltNodeCollector,  Next: Collection,  Prev: SplayTree,  Up: Classes
+
+
+File: libobjects.info,  Node: Collection,  Next: KeyedCollection,  Prev: EltNodeCollector,  Up: Classes
+
+   A Collection is ...
+
+* Menu:
+
+* Basic Creating::
+* Freeing::
+* Basic Adding::
+* Basic Removing::
+* Basic Replacing::
+* Basic Enumerating::
+* Duplicating::
+* Archiving::
+* Basic Querying::
+
+
+File: libobjects.info,  Node: KeyedCollection,  Next: IndexedCollection,  Prev: Collection,  Up: Classes
+
+KeyedCollection
+===============
+
+* Menu:
+
+* Basic Creating::
+* Keyed Creating::
+* Freeing::
+* Basic Adding::
+* Keyed Adding::
+* Basic Removing::
+* Keyed Removing::
+* Basic Replacing::
+* Keyed Replacing::
+* Basic Enumerating::
+* Keyed Enumerating::
+* Duplicating::
+* Archiving::
+* Basic Querying::
+* Keyed Querying::
+
+
+File: libobjects.info,  Node: IndexedCollection,  Prev: KeyedCollection,  Up: Classes
+
+IndexedCollection
+=================
+
+* Menu:
+
+* Basic Creating::
+* Freeing::
+* Basic Adding::
+* Keyed Adding::
+* Indexed Adding::
+* Basic Removing::
+* Keyed Removing::
+* Indexed Removing::
+* Basic Replacing::
+* Keyed Replacing::
+* Indexed Replacing::
+* Basic Enumerating::
+* Keyed Enumerating::
+* Indexed Enumerating::
+* Duplicating::
+* Archiving::
+* Basic Querying::
+* Keyed Querying::
+* Indexed Querying::
+
+
+File: libobjects.info,  Node: Projects,  Next: Protocol Index,  Prev: Classes,  Up: Top
+
+To Do List and Questions
+************************
+
+Projects Looking for Volunteers
+===============================
+
+   If you think you can do one of these projects, please let me know.
+Your help is greatly appreciated!  Send email to
+`mccallum@gnu.ai.mit.edu'.
+
+   * Make the GNU Objective C runtime properly initialize the class
+     pointer of statically-created string objects (i.e. the string
+     objects created with the syntax `@"This is a constant string
+     object"').  See the relevant comments in gcc/objc-act.c.  Once we
+     get this working I'll release the suite of String classes that
+     I've already written.
+
+     Please!  Someone?  I want to do this soon so that we can get the
+     ensuing interface changes done before too many people write code
+     based on the current deprecated char-pointer interfaces.
+
+   * Make the GNU Objective C runtime thread-safe.  (Again, someone?
+     We really need this.)
+
+   * Write a test-suite for the library.  Use dejagnu.
+
+   * Write a proper name server for SocketPort's.  Currently we're just
+     hashing the name to a socket port number--we could get unwanted
+     hash collisions.  This will also allow us to name a SocketPort
+     after it's been created.
+
+   * Make SocketPort more reliable than UDP.
+
+   * Add some features to the compiler:
+       1. You can't add __attribute__'s to methods.  I want to use:
+                  - (int) writeFormat: (const char *)format, ...
+                      __attribute__ ((format (printf, 1, 2)));
+                  - (int) readFormat: (const char *)format, ...
+                      __attribute__ ((format (scanf, 1, 2)));
+
+       2. I would like to be able to use a function name/pointer as an
+          argument to @encode() and get a type string like the selector
+          types.
+
+   * Notification registration classes, notification classes.
+
+   * Write more/better random number generators.  Make them conform to
+     the protocol <RandomGenerating>.  See RNGAdditiveCongruential.
+
+   * Write user-visible random number classes in the spirit of the
+     `Random' class.  Look at Smalltalk's ProbabilityDistribution
+     classes, and think about replacing the `Random' class with
+     something more like these.  How about Poisson and Gaussian
+     distributions also?
+
+My To Do's
+==========
+
+   * Many code fixes and cleanups, indicated with `xxx' in the source.
+
+   * In remote object messaging, send exceptions back to the requestor.
+     I'm waiting for gcc 2.7 exceptions.
+
+   * Add Coding methods to all the other collection classes.
+
+   * Find method for detecting NeXT vs GNU runtime.  Put it in
+     `configure.in' and define `NeXT_runtime'.
+
+   * The LAMBDA macro doesn't work on all systems.  Request a change to
+     gcc that make something like LAMBDA work on all systems.
+
+   * Possibly change `-(int)compare:anObject' for Collection.  How
+     should non-Indexed collections be ordered?
+
+   * Think about restructuring the Collection heirarchy.  We need an
+     abstract class for collections that are ordered, but whose order
+     is fixed by the -compare: method, i.e. not user-settable.  We need
+     non-mutable version of the classes.  The implementation of this
+     stuff is crying out for multiple inheritance or
+     protocols-with-implementation!
+
+   * Finish HashTable.m.  Implement freeKeys:values: (What is this
+     supposed to do anyway?).  Handle archiving of atom string, "%",
+     keys.
+
+   * Finish Time.m.  Many methods are not yet implemented.
+
+   * Write a good hash function for floats and doubles.
+
+   * Many implementations could be made more efficient.  Libobjects
+     hasn't been efficiency tuned at all.  Overridding more methods in
+     certain classes could make things more efficient (especially
+     EltNodeCollector).  SplayTree's could be done using top-down
+     splaying.  collhash could be completely reimplemented.  ...and a
+     lot more...
+
+   * Fix bugs that arise when double's are included in the elt union.
+
+   * Fix all the subclassResponsibility comments in objects/*.h
+
+   * I will finish libobjects documentation.
+
+Questions
+=========
+
+   I would greatly appreciate your feedback on the questions below.
+Please email your thoughts to mccallum@gnu.ai.mit.edu.
+
+   * I want to put method names in texinfo indices, but the colons in
+     the method names are interfering with info's notion of menu item
+     names and node names.  Help.  Any ideas?  (Kresten?)
+
+   * I need to read through al the enumState code again and clean it up.
+     Perhaps we'd like an Iterator class to use as a wrapper around the
+     enumState functionality?  The NIH Class Library organizes things
+     this way.
+
+   * Should we keep the -safe... enumeration methods?  They sure do add
+     a lot of clutter to the protocols.  If we got rid of them people
+     would have to alloc an Array, copy the contents, and free the Array
+     themselves.
+
+   * What would people think about removing the ...Object methods, and
+     just having the ...Element methods instead?  It might be a bit
+     more difficult to use, but it would reduce clutter significantly.
+     The ...Element methods are more efficient to use anyway, since
+     most ...Object methods are wrappers around ...Element calls.  I'm
+     not sure what I think we should do.
+
+     Here's an idea: Define the ...Object methods as macros.  But we
+     need a new macro scheme that works for methods instead of
+     functions.  We would need something with the following
+     functionality:
+          #define [REC replaceObject: OLDOBJ with: NEWOBJ] \
+                  ([REC replaceElement:(elt)(OLDOBJ) with:(elt)(NEWOBJ)].id_u)
+     The issue of macros for methods has been mentioned in email found
+     in the gnu-objc-issues archive, in the file `preprocessor'.
+
+   * It would be nice to have more error checking on the types going in
+     and out of a collection.  When some code tries to put a float into
+     a collector initialized to hold integers, it would be nice to
+     catch that.  Perhaps just some macros that will do the appropriate
+     checks?  It would also be nice if elt's returned from methods were
+     automatically casted to the correct type.
+
+     It might be good to use something like this (from the gcc PROJECTS
+     file):
+          * A way of defining a structure containing a union, in which the choice
+          of union alternative is controlled by a previous structure component.
+          
+          Here is a possible syntax for this.
+          
+          struct foo {
+            enum { INT, DOUBLE } code;
+            auto union { case INT: int i; case DOUBLE: double d;} value : code;
+          };
+
+     This has the disadvantage that now elt's will take up more than one
+     word.
+
+     What I would prefer is something more radical:  Some efficient way
+     to enable int's, float's to receive Objective-C messages.  Then I
+     wouldn't have to worry about any of these horrible elt typing
+     issues; I wouldn't have to worry about all the ...Object
+     ...Element method name duplication; I wouldn't have to worry about
+     the inefficiency of having all the ...Object methods just be
+     covers for the ...Element methods.  Lots of other Objective-C code
+     would find this useful too.  It has the advantage of fixing the
+     previous question also (about removing the ...Element ...Object
+     method duplication).  We need Objective-C objects that can live on
+     the stack.
+
+     For now, I've worked out a ObjC++ solution to this with
+     constructors and casting operators.  Now I'm just waiting for
+     Kresten to finish ObjC++.
+
+   * Perhaps we should put more safety checks into LinkedList,
+     BinaryTree, etc:  Check that node is not already part of another
+     collection (by checking that neighbor pointers are nil?)  In method
+     "insertObject:newObject after:oldObject" make sure that oldObject
+     is a member of self.  ...It seems that there is a lot of potential
+     for nasty bugs with mistakes like these.
+
+   * HashTable.m (-initKeyDesc:valueDesc:capacity:)  I tried to make it
+     portable, but I didn't try very hard.  Anyone want to send in
+     fixes?
+
+   * I fixed -emptyCopy in all the subclasses, but the -emptyCopy scheme
+     seems pretty fragile.  How about calling -initFoo: inside
+     -emptyCopy?  This way we avoid having yet another method in which
+     instance vars must be initialized to some consistent state.
+     -allocCopy would never even get called.  <<ObjC insiders: This is
+     a less well-expressed version of what we've just been discussing
+     in email.>>
+
+   * The situation with LinkedListNode and LinkedListEltNode, (and the
+     analagous classes for BinaryTree's and RBTree's) are just crying
+     out for multiple inheritance.  Anyone have ideas that are prettier
+     than my quick fix using #include ?  Anyone have an alternate
+     organization that doesn't need multiple inheritance?
+
+   * Somes classes, like RBTree, depend on a certain ordering of
+     elements to maintain internal consistency.  How should we define
+     the behavior of methods whose names imply that the user can set
+     the ordering of elements independent of these constraints? (like
+     -appendElement: or -insertElement:atIndex: for instance).  I see
+     three possibilities:
+       1. The methods do what they say.  Give the user the power to
+          override the default ordering.
+
+       2. The methods do not do what they say, but call addElement:
+          instead.  This lets the class maintain its internal
+          consistency, but it has the potential to be a bit confusing
+          to the user.  What would happen if the user sent a sort
+          message to such a class, for instance?
+
+       3. The methods trigger a -shouldNotImplement: error.  This
+          solution perhaps best expresses the reality of the situation,
+          but it's a bit strange for a class to signal an error on a
+          method which is in a protocol the class conforms to.
+            Currently I'm using solution #1 (in most classes?).
+
+   * I created libobjects.texi by copying libg++.texi.  Some of the text
+     is taken verbatim.  Is this a problem?
+
+   * If you don't like the organization of the documentation and you
+     have suggestions for changes, please say so now, not after it's
+     all been written.
+
+   * Does anyone really miss the ability to set the comparison function
+     independent of the element encoding?  If it's really important we
+     can come up with ways to do this and still be able to archive
+     comparison functions.
+
+   * Something like this needed?  - elementDidChange: (elt*)elementPtr;
+     Currently you have to remove, change, add, for some classes.
+
+   * Opinions on the error reporting scheme?  See also
+     `checks/test05.m'.  This error reporting scheme will most likely
+     change completely as soon as gcc gets exception handling.
+
+   * Should I include _comparison_function as an instance variable of
+     Collection?  Putting it back in could make some things more
+     efficient, but several classes don't have configurable
+     comparisonFunction's (i.e. String, LinkedList, BinaryTree,
+     RBTree), so they don't need it.
+
+   * I've been told that GNU filenames should be 14 chars or less.  I
+     don't want to abbreviate my classnames, but I think using .h
+     @interface files with names different than the class name is even
+     worse.  ** I want to keep my unabbreviated filenames!! **  What to
+     do, what to do... I can't believe that *all* GNU classnames will be
+     limited to 12 characters forever and ever--disgusting.
+
+Changes I'd like in the Objective-C runtime and gcc:
+====================================================
+
+   * Make OBJC_MALLOC() and friends public.  Have the runtime and
+     Object.m use them.  See objc-malloc.[hm].
+
+   * Give hash.[hc] functionality more like collhash.[hc], i.e.: Add
+     hash_node_for_key() to hash.h and hash.c.  Change hash_next() so
+     that more than one enumeration of the contents can happen
+     concurrently.  How about removing cache as a parameter to the
+     hashing functions in hash.h and hash.c.  Do the masking on the
+     result of the hash function.  This seems much neater to me.
+
+   * Add a way of defining a structure containing a union, in which the
+     choice of union alternative is controlled by a previous structure
+     component.  (See gcc `PROJECTS' file.)
+
+How to contribute
+=================
+
+   Programmers who have written Objective-C classes that they believe
+to be of general interest are encouraged to write to
+mccallum@gnu.ai.mit.edu.  Contributing code is not difficult. Here are
+some general guidelines:
+
+   * FSF must maintain the right to accept or reject potential
+     contributions.  Generally, the only reasons for rejecting
+     contributions are cases where they duplicate existing or
+     nearly-released code, contain unremovable specific machine
+     dependencies, or are somehow incompatible with the rest of the
+     library.
+
+   * Acceptance of contributions means that the code is accepted for
+     adaptation into libobjects.  FSF must reserve the right to make
+     various editorial changes in code. Very often, this merely entails
+     formatting, maintenance of various conventions, etc. Contributors
+     are always given authorship credit and shown the final version for
+     approval.
+
+   * Contributors must assign their copyright to FSF via a form sent out
+     upon acceptance. Assigning copyright to FSF ensures that the code
+     may be freely distributed.
+
+   * Assistance in providing documentation, test files, and debugging
+     support is strongly encouraged.
+
+   Extensions, comments, and suggested modifications of existing
+libobjects features are also very welcome.
+
+
+File: libobjects.info,  Node: Protocol Index,  Next: Class Index,  Prev: Projects,  Up: Top
+
+Protocol Index
+**************
+
+* Menu:
+
+File: libobjects.info,  Node: Class Index,  Next: Method Function Macro Index,  Prev: Protocol Index,  Up: Top
+
+Class Index
+***********
+
+* Menu:
+
+File: libobjects.info,  Node: Method Function Macro Index,  Next: Concept Index,  Prev: Class Index,  Up: Top
+
+Method, Function and Macro Index
+********************************
+
+* Menu:
+
+* -exchangeTop on Stack:                Stack Methods.
+* -freeEnumState: on Collection:        Basic Enumerating.
+* -getNextElement:withEnumState: on Collection: Basic Enumerating.
+* -getNextObject:withEnumState: on Collection: Basic Enumerating.
+* -getPrevElement:withEnumState: on IndexedCollection: Indexed Enumerating.
+* -getPrevObject:withEnumState: on IndexedCollection: Indexed Enumerating.
+* -makeObjectsPerformInReverse: on IndexedCollection: Indexed Enumerating.
+* -makeObjectsPerformInReverse:with: on IndexedCollection: Indexed Enumerating.
+* -newEnumState on Collection:          Basic Enumerating.
+* -popElement: on Stack:                Stack Methods.
+* -popObject: on Stack:                 Stack Methods.
+* -pushElement: on Stack:               Stack Methods.
+* -pushObject: on Stack:                Stack Methods.
+* -safeMakeObjectsPerformInReverse: on IndexedCollection: Indexed Enumerating.
+* -safeMakeObjectsPerformInReverse:with: on IndexedCollection: Indexed Enumerating.
+* -safeWithElementsCall:whileTrue: on Collection: Basic Enumerating.
+* -safeWithElementsInReverseCall: on IndexedCollection: Indexed Enumerating.
+* -safeWithElementsInReverseCall:whileTrue: on IndexedCollection: Indexed Enumerating.
+* -safeWithObjectsInReverseCall: on IndexedCollection: Indexed Enumerating.
+* -safeWithObjectsInReverseCall:whileTrue: on IndexedCollection: Indexed Enumerating.
+* -setCapacity: on Array:               Array Capacity Management.
+* -setGrowFactor: on Array:             Array Capacity Management.
+* -topElement on Stack:                 Stack Methods.
+* -topObject on Stack:                  Stack Methods.
+* -withElementsCall:whileTrue: on Collection: Basic Enumerating.
+* -withElementsInReverseCall: on IndexedCollection: Indexed Enumerating.
+* -withElementsInReverseCall:whileTrue: on IndexedCollection: Indexed Enumerating.
+* -withObjectsInReverseCall: on IndexedCollection: Indexed Enumerating.
+* -withObjectsInReverseCall:whileTrue: on IndexedCollection: Indexed Enumerating.
+* +defaultCapacity on Array:            Array Capacity Management.
+* +defaultGrowFactor on Array:          Array Capacity Management.
+* -addContentsOf: on Collection:        Basic Adding.
+* -addContentsOfIfAbsent: on Collection: Basic Adding.
+* -addElement: on Bag:                  Bag Adding.
+* -addElement: on Collection:           Basic Adding.
+* -addElementIfAbsent: on Collection:   Basic Adding.
+* -addElementsCount: on Collection:     Basic Adding.
+* -addObject: on Bag:                   Bag Adding.
+* -addObject: on Collection:            Basic Adding.
+* -addObjectIfAbsent: on Collection:    Basic Adding.
+* -addObjectsCount: on Collection:      Basic Adding.
+* -appendContentsOf: on IndexedCollection: Indexed Adding.
+* -appendElement: on IndexedCollecting: Indexed Adding.
+* -appendObject: on IndexedCollection:  Indexed Adding.
+* -contentEncoding on Collection:       Basic Querying.
+* -initEncoding: on Array:              Array Capacity Management.
+* -initEncoding: on Collection:         Basic Creating.
+* -init on Collection:                  Basic Creating.
+* -insertElement:after: on IndexedCollecting: Indexed Adding.
+* -insertElement:atIndex: on IndexedCollecting: Indexed Adding.
+* -insertElement:atKey: on KeyedCollection: Keyed Adding.
+* -insertElement:before: on IndexedCollecting: Indexed Adding.
+* -insertObject:after: on IndexedCollection: Indexed Adding.
+* -insertObject:atIndex: on IndexedCollection: Indexed Adding.
+* -insertObject:atKey: on KeyedCollection: Keyed Adding.
+* -insertObject:before: on IndexedCollection: Indexed Adding.
+* -isEmpty on Collection:               Basic Querying.
+* -prependContentsOf: on IndexedCollection: Indexed Adding.
+* -prependElement: on IndexedCollecting: Indexed Adding.
+* -prependObject: on IndexedCollection: Indexed Adding.
+* -read: on Collection:                 Archiving.
+* -removeElement: on Bag:               Bag Removing.
+* -removeObject: on Bag:                Bag Removing.
+* -safeWithElementsCall: on Collection: Basic Enumerating.
+* -safeWithObjectsCall: on Collection:  Basic Enumerating.
+* -withElementsCall: on Collection:     Basic Enumerating.
+* -withObjectsCall: on Collection:      Basic Enumerating.
+* -write: on Collection:                Archiving.
+* insertContentsOf:atIndex: on IndexedCollection: Indexed Adding.
+* COLL_GCC_VERSION:                     Conventions.
+* COLL_VERSION:                         Conventions.
+* LAMBDA:                               LAMBDA.
+
+
+File: libobjects.info,  Node: Concept Index,  Prev: Method Function Macro Index,  Up: Top
+
+Concept Index
+*************
+
+* Menu:
+
+* Content types:                        Content Types.
+* Defining Functions In Place:          LAMBDA.
+* Function definitions with LAMBDA:     LAMBDA.
+* Types of storable data:               Content Types.
+
+
+
+Tag Table:
+Node: Top1254
+Node: Copying3031
+Node: Contributors3164
+Node: Installation4235
+Node: Trouble10725
+Node: Overview10965
+Node: Organization13490
+Node: Conventions17278
+Node: Content Types21250
+Node: Creating22392
+Node: Basic Creating22575
+Node: Keyed Creating23004
+Node: Freeing23121
+Node: Adding23537
+Node: Basic Adding23771
+Node: Keyed Adding25038
+Node: Indexed Adding25526
+Node: Removing27219
+Node: Basic Removing27468
+Node: Keyed Removing27554
+Node: Indexed Removing27665
+Node: Replacing27786
+Node: Basic Replacing28019
+Node: Keyed Replacing28108
+Node: Indexed Replacing28223
+Node: Enumerating28347
+Node: Safe vs Unsafe Enumerating29506
+Node: Basic Enumerating30080
+Node: Keyed Enumerating31834
+Node: Indexed Enumerating31994
+Node: LAMBDA33600
+Node: Duplicating36295
+Node: Archiving36486
+Node: Querying36927
+Node: Basic Querying37134
+Node: Keyed Querying37613
+Node: Indexed Querying37755
+Node: Sorting37878
+Node: Classes38012
+Node: Set38553
+Node: Bag38658
+Node: Bag Adding39078
+Node: Bag Removing39329
+Node: Dictionary39601
+Node: MappedCollector39742
+Node: Array39900
+Node: Array Capacity Management40426
+Node: Stack40844
+Node: Stack Methods41358
+Node: Queue41713
+Node: GapArray41797
+Node: LinkedList41886
+Node: BinaryTree41980
+Node: RBTree42072
+Node: SplayTree42163
+Node: EltNodeCollector42260
+Node: Collection42361
+Node: KeyedCollection42660
+Node: IndexedCollection43085
+Node: Projects43583
+Node: Protocol Index57456
+Node: Class Index57590
+Node: Method Function Macro Index57737
+Node: Concept Index62398
+
+End Tag Table

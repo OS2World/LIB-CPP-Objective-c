@@ -1,0 +1,38 @@
+This package is a compiled version of libobjects-0.1.2 for emx 0.9a/gcc 2.6.3
+===============================================================================
+
+The source code with applied patches for OS/2 should be also available on
+hobbes.
+
+You should simply unpack the whole package in the root directory of an
+HPFS partition. All header files, library files (.a and .lib) and the
+documentation can be found in a tree under \usr\local\.
+
+If you don't like this directory structure, just move the files to a place
+where they can be accessed by your compiler.
+
+After installation, you can find the following in:
+
+\usr\local\include\objects		Header files
+\usr\local\lib				Library files (.a and .lib)
+\usr\local\info				Info pages for libobjects
+\usr\local\install			readme.libobjects, this file
+
+Just add <drive:>/usr/local/include/objects and
+<drive:>/usr/local/include/objects/next-include to the environment variable
+OBJC_INCLUDE_PATH (normally set in config.sys). After setting this, the compiler
+can find the header files
+
+Add <drive:>/usr/local/lib to LIBRARY_PATH to let the linker find the .lib and
+.a files.
+
+After changing your config.sys, don't forget to reboot your system to let the
+changes take affect.
+
+===============================================================================
+If you have any questions concerning the OS/2 port, not the library itself, send
+an email message to me.
+
+Thomas Baier
+baier@ci.tuwien.ac.at
+

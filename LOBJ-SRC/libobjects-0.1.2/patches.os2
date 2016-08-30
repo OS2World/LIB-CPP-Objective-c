@@ -1,0 +1,19 @@
+Patches to libobjects to compile correctly with emx 0.9a/gcc 2.6.3 on OS/2
+systems: The patches were done by Thomas baier (baier@ci.tuwien.ac.at)
+===============================================================================
+
+As I could not get configure to work correctly, a makefile was created from
+the template Makefile.in
+
+This makefile should work with emx 0.9a/gcc 2.6.3 on OS/2 systems.
+
+time.m didn't compile correctly. As the emx C library does not provide a
+getrusage() function, the code for time.m was corrected accordingly.
+
+NXStringTable_scan.c was renamed to NXStringT_scan.c. ar seems to cut the file
+names, so the original object files NXStringTable_scan.o and NXStringTable.o
+are the same.
+
+===============================================================================
+If you have any questions concerning the port (not the library itself) send
+an email message to me at baier@ci.tuwien.ac.at

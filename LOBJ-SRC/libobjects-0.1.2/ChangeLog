@@ -1,0 +1,860 @@
+Tue Dec 13 11:53:54 1994  Andrew McCallum  <mccallum@mustang.cs.rochester.edu>
+
+	* Makefile.in (OBJECTS_VERSION): Version 0.1.2.
+
+	* Coder.m (Object (CoderAdditions)): Removed methods retainCount,
+	dealloc, release, retain.
+	* objects/Coder.h (Object (CoderAdditions)): Likewise.
+
+Mon Dec 12 14:13:58 1994  Andrew McCallum  <mccallum@leopard.cs.rochester.edu>
+
+	* Makefile.in (dvi): Now points at libobjects.dvi.
+	(libobjects.dvi): New target, disabled until texinfo.tex is fixed.
+
+Fri Dec  9 20:00:56 1994  Andrew McCallum  <mccallum@edsel.cs.rochester.edu>
+
+	* Makefile.in (ANNOUNCE): depends on news.texi.
+
+	* Makefile.in (version.texi): Output FTP vars only if non-empty.
+
+	* Makefile.in (OBJECTS_FTP_MACHINE,OBJECTS_FTP_DIRECTORY): New vars.
+	(version.texi): set OBJECTS_FTP_MACHINE and OBJECTS_FTP_DIRECTORY.
+
+	* Makefile.in (OBJECTS_VERSION): Bumped to 0.1.1.
+
+Wed Dec  7 12:59:32 1994  Andrew McCallum  <mccallum@vein.cs.rochester.edu>
+
+	* SocketPort.m: Include <sys/select.h> #if _AIX.  (Reported by
+	Todd B. Templeton <toddt@phelpsd.com>.)
+
+Sun Nov 20 19:19:13 1994  Andrew McCallum  (mccallum@mustang.cs.rochester.edu)
+
+	* Connection.m (connectionForward,connectionPerformAndDismissCoder): 
+	Removed old #if'ed-out versions.
+
+Mon Nov 14 10:58:46 1994  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* objects/objc-gnu2next.h: (sel_get_uid): Fix typo.
+	(class_is_class, class_is_meta_class, object_is_class,
+	object_is_instance, object_is_meta_class): New functions.
+	The above from a patch by Matthias Klose <doko@cs.tu-berlin.de>
+
+Sun Nov 13 14:29:37 1994  Andrew McCallum  (mccallum@moose.cs.rochester.edu)
+
+	* Makefile.in (diff): Fix tar call.  Add proper arguments to diff.
+
+Thu Nov 10 16:51:48 1994  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* news.texi (Noteworthy changes since version @samp{0.1.0}): New
+        section.
+
+	* Makefile.in (TAGS): Use DIST_FILES, not non-existant SRCS.
+
+Wed Nov  9 18:34:53 1994  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* configure.in: Remove duplicate NeXT_runtime=0.
+
+Tue Nov  8 10:44:30 1994  Andrew McCallum  (mccallum@moose.cs.rochester.edu)
+
+	* libobjects.texi (Organization): Updated inheritance tree.
+	* checks/test12.m (main): Free "rng", not "r" twice.
+	* TextCoder.m (encodeName): Do right thing for NULL name.
+	(Above three reported by Stephen Peters <SPETERS@us.oracle.com>)
+
+	* Proxy.m (autorelease): New method.
+
+	* Time.m: Patch for Solaris 2.4.  Use times() instead of
+	getrusage().  (Patch from Stephen Peters <speters@us.oracle.com>)
+
+	* Makefile.in (GNU_MFILES,GNU_HEADERS): Added AutoreleasePool,
+	AutoreleaseStack and ObjectRetaining.
+
+	* AutoreleasePool.m: Removed retain_count stuff.  Now setting
+	autorelease_class.
+
+	* ObjectRetaining.m: Removed stack release code.
+	(autorelease_class): New variable.
+
+	* objects/Retaining.h (autorelease): New method.
+	Added comments.
+
+	* objects/objc-gnu2next.h: Moved Object(GNUExtentions) category
+        from stdobject.h to here.
+
+	* Makefile.in (DIST_FILES): Added README.ULTRIX.
+
+	* Makefile.in (install,installdirs,includedir): Make NEXT_HEADERS
+	install to proper place: objects/next-include/.
+
+Fri Nov  4 01:32:27 1994  Andrew McCallum  (mccallum@moose.cs.rochester.edu)
+
+	* Makefile.in (diff): New target.
+
+	* Makefile.in (ADVERTISEMENT): New target.
+
+	* Version 0.1.0 released.
+
+Thu Nov  3 19:20:28 1994  Andrew McCallum  (mccallum@mustang.cs.rochester.edu)
+
+	* Connection.[hm] (connectionForward:::): Added object argument.
+	Use selectorTypeForProxy: if defined (NeXT_runtime).
+	* Proxy.m (forward::): Added object argument to connectionForward.
+	(selectorTypeForProxy:):  Add an Object Category with this method.
+
+	* Coder.m (decodeName:): Terminate char* with 0.
+
+	* collhash.c:  Use objc_malloc and friends instead of
+	__objc_xmalloc and friends.
+
+	* StdioStream.m (writeBytes:length:): Use fwrite, not write.
+	(readBytes:length:):  Use fread, not read.
+
+Wed Nov  2 20:59:36 1994  Andrew McCallum  (mccallum@leopard.cs.rochester.edu)
+
+	* configure.in:  Updated for Autoconf 2.0
+	* Makefile.in (DIST_FILES): Changed install.sh to install-sh.
+	(distclean): Added config.log, config.cache.
+	(prefix, exec_prefix):  Updated for Autoconf 2.0
+
+Fri Oct 28 18:20:28 1994  Andrew McCallum  (mccallum@mustang.cs.rochester.edu)
+
+	* *.[hm]:  Change many "NeXT_cc" to "NeXT_runtime"
+	* Proxy.[hm]:  Add and use _method_types ivar if NeXT_runtime.
+	* objects/objc-gnu2next.h:  Many addtional functions #define'd.
+	* objc-gnu2next.m:  New file.
+	* Makefile.in (GNU_MFILES):  Added objc-gnu2next.m.
+
+	* BinaryCoder.m (encode,decodeValueOfSimpleType:...): Added code
+	to write to stream directly (i.e. it does its own architecture
+	independent coding).  This replaces previous messy code that
+	interfaced with the internals of GNU TypedStream's.
+	* Makefile.in (GNU_MFILES,GNU_HFILES): Removed bcoder-stream.[hm].
+
+Thu Oct 27 17:39:49 1994  Andrew McCallum  (mccallum@mustang.cs.rochester.edu)
+
+	* SocketPort.m (sendPacket:toPort:timeout:,
+	newRemoteWithNumber:onHost:): Added casts to (char*) to prevent
+	warnings on systems that don't have "const" on args to
+	gethostbyname() and sendto().
+
+	* ConnectedCoder.h:  New #define's METHODTYPE_REQUEST,
+	METHODTYPE_REPLY. 
+	* Connection.m (_typeForSelector:remoteTarget:): New method.
+	(_handleMethodTypeRequest:): New method.
+	(doReceivedRequestsWithTimeout:): Watch for METHODTYPE_* msgs.
+	(newReceivedReplyRmcWithSequenceNumber:): Likewise.
+	* Proxy.m (selectorTypeForProxy:):  New method.
+	* Proxy.h (_method_types):  New instance variable.
+
+	* mframe.[hm], mtypes.[hm]: New files.
+	* Makefile.in (GNU_MFILES):  Added mframe.m
+	(GNU_HFILES): Added mframe.h.
+	(GNU_CFILES): mtypes.c.
+	(GNU_OTHER_SRCFILES): Added mtypes.h.
+	* Connection.m (connectionForward,connectionPerformAndDismissCoder):
+	Use functions in mframe.m instead of previous DO-specific method
+	frame code.
+
+Mon Oct 24 18:41:35 1994  Andrew McCallum  (mccallum@leopard.cs.rochester.edu)
+
+	* configure.in: Added AC_HEADER_CHECK for sys/rusage.h and
+	ucbinclude/sys/resource.h needed in Time.m on various SYSV
+	systems. 
+
+	* *.[hm]: Changed method name encodeType: to encodeValueOfType:.
+	Likewise for decodeType and SimpleType method names.
+
+	Makefile.in (GNU_OTHER_SRCFILES):  Removed bzero.c.
+	(DIST_FILES):  Added README.BZERO.
+	configure.in:  Removed bzero stuff.
+
+Thu Oct 20 13:10:50 1994  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* IndexedCollection.m (putElement:atKey:): New method, needed for
+	KeyedCollecting protocol.  (reported by Niels Mvller
+	<nisse@lysator.liu.se>) 
+
+Wed Oct 19 19:35:32 1994  Andrew McCallum  (mccallum@zebra.cs.rochester.edu)
+
+	* configure.in: Look for libraries "socket" and "nsl", needed for
+	the distributed objects check/example programs on Solaris machine.
+
+	* checks/test01.m,test04.m,test09.m: Use lrand48 instead of random
+	if on Solaris machine.
+
+Tue Oct 18 10:27:29 1994  Andrew McCallum  (mccallum@graphite.cs.rochester.edu)
+
+	* Set.[hm] (*WithCollection:): Renamed from *With:.
+
+	* *.[hm]: Changed method name "initCapacity" to
+	"initWithCapacity".  Changed method names "...Encoding:" to
+	"...(With)Type:" to match Coder method names.
+
+Fri Oct  7 17:08:57 1994  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* DelegatePool.[hm], Makefile.in:  Renamed "DelegateList" to
+	"DelegatePool" to avoid false association with List object.
+
+Thu Sep 22 10:06:19 1994  Andrew McCallum  (mccallum@llama.cs.rochester.edu)
+
+	* configure.in: Check for bzero, and include bzero.o in the
+	library if not.  (This works around a bug in libobjc.)
+	* Makefile.in (GNU_OBJS): Added @BZERO@.
+	(GNU_OTHER_SRCFILES): Added bzero.c.
+
+	* *.m: Added methods for Coding where necessary; a few just send
+	-notImplemented: for now.
+
+Tue Sep 20 20:11:57 1994  Andrew McCallum  (mccallum@llama.cs.rochester.edu)
+
+	* objects/ValueHolding.h: Divided ValueHolding protocol into
+	ValueGetting and ValueSetting.
+
+	* GCC-BUGS, CREDITS: new files.
+	* Makefile.in (DIST_FILES): Added GCC-BUGS, CREDITS.
+
+Mon Sep 19 14:42:26 1994  Andrew McCallum  (mccallum@llama.cs.rochester.edu)
+
+	* LinkedList.m (successorOfElement,predecessorOfElement): return
+	nil when there is no such element because arg was first or last in
+	list; previously it raised an error.
+
+Mon Sep 12 18:54:47 1994  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* HashTable.[hm]: Changed GNUHashState to NXHashState.
+
+Tue Sep  6 21:11:38 1994  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* LinkedList.m, LinkedListNode.m EltNode-m: Added methods for
+	Coding.
+
+Sat Aug 20 18:34:38 1994  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* examples/*: Added example files: Makefile.in, dictionary.m,
+	port-server.m, port-client.m, first-server.[hm], first-client.m,
+	second-server.[hm], second-client.[hm], textcoding.m
+
+Fri Aug 19 18:39:06 1994  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* Collection.m, Set.m: Added new methods for Coding.
+
+	* Makefile.in: Include new files in the distribution.  Add new
+	classes: Stream, StdioStream, MemoryStream, Coder, TextCoder,
+	BinaryCoder, Port, SocketPort, Connection, Proxy, ConnectedCoder,
+	Lock, RetainingNotifier.  New protocols: Coding, Retaining,
+	Locking.  New text files: announce.texi, ANNOUNCE, readme.texi,
+	README.
+
+Thu Aug 11 12:30:20 1994  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* checks/Makefile.in (CC): Changed from gcc to @CC@.
+
+	* CircularArray.m (insertElement:atIndex:): Swapped order of
+	incrementCount and CIRCULAR_TO_BASIC.  (Test case crash reported
+	by Matthias Klose <doko@cs.tu-berlin.de>.)
+
+Wed Aug 10 12:30:45 1994  Andrew McCallum  (mccallum@raccoon.cs.rochester.edu)
+
+	* Makefile.in: Defined GNU_MFILES, NeXT_MFILES, GNU_CFILES,
+	NeXT_CFILES, GNU_HEADERS, NeXT_HEADERS, GNU_OTHER_SRCFILES,
+	NeXT_OTHER_SRCFILES. Removed *OFILES.  Renamed DISTFILES to
+	DIST_FILES.
+
+Tue Aug  9 15:21:43 1994  Andrew McCallum  (mccallum@mink.cs.rochester.edu)
+
+	* Changed name to libobjects.  All files changed accordingly.
+	
+	* Makefile.in (DISTFILES):  Added install.sh.
+
+Mon Aug  8 13:15:46 1994  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* Makefile.in (GOBJC_HDRS): Removed gobjc/ReferenceCounting.h.
+	Will be replaced by Retaining protocol.
+
+Sun Aug  7 17:13:08 1994  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* config.nextcc.h: Created.
+	* configure.in: Update to use config.nextcc.h, define NeXT_cc
+	instead of NXcc.
+	Flipped the logic on NeXT32plus. (Reported by Matthias Klose
+	<doko@cs.tu-berlin.de>)
+
+	* Time.[hm]: Hack to make it work with Solaris rusage.
+
+Fri Jul 22 11:41:32 1994  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* Makefile.in (dist): Makefile.depend and Makefile.local forced to
+	be empty files by touch.
+
+Sat Jul 16 13:18:10 1994  R. Andrew McCallum  (mccallum@ngoma)
+
+	* configure.in: Define NXcc if using NeXT's cc.  Sources
+	#ifdef'ing (NeXT) don't	distinguish between NeXT cc and gcc on a
+	NeXT. 
+	*.[hm]: Change #ifdef (NeXT) to #ifdef (NXcc)
+
+	* Makefile.in:  include Makefile.local.
+	* zone.c, gobjc/next-includes/zone.h: New files.
+
+Wed Jul  6 16:23:16 1994  Andrew McCallum  (mccallum@swan.cs.rochester.edu)
+
+	Changed name to from libcoll to libgobjc:
+	* All files: Changed name to "GNU Objective-C Class Library" in all
+	header comments.
+	* gobjc: Renamed coll to gobjc.
+	* gobjc/stdgobjc.h: Renamed from coll/collstd.h.  Removed some
+	declarations that were already in gobjc/objc-malloc.h.
+	* gobjc/next-includes/objc: Created
+	* gobjc/next-includes/objc/
+	{List.h,HashTable.h,Storage.h,NXStringTable.h}: Moved from gobjc.
+	* Makefile.in: Names changed from libcoll to libgobjc.
+	* gobjc/next-include/objc/*.h: Look in objc instead of coll.
+
+	* gobjc/next-include/objc/List.h:  Changed GNU_ to NX_.
+
+Tue Jul  5 15:51:58 1994  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* Storage.m (_makeRoomForAnotherIfNecessary): Added self-> to find
+	ivar in assert() call.  Reported by ratlifc@ctron.com (Christian
+	A. Ratliff).
+
+Tue Jun  7 16:21:57 1994  Andrew McCallum  (mccallum@raccoon.cs.rochester.edu)
+
+	* List.m (incrementCount): Compare numElements and maxElements by
+	>= instead of ==.  (Reported by Paul Kunz.)
+
+Fri Jun  3 13:26:42 1994  Andrew McCallum  (mccallum@zebra.cs.rochester.edu)
+
+	* LinkedList.m (successorOfElement:,predecessorOfElement:): Added. 
+	* (removeElementAtIndex:): Return old element.
+	(Both reported by nisse@lysator.liu.se)
+
+Tue May 24 10:13:38 1994  Andrew McCallum  (mccallum@brain.cs.rochester.edu)
+
+	* coll/objc-gnu2next.h (objc_read_types): Removed ## from
+	NXWriteTypes() and NXReadTypes().  -cpp-traditional doesn't like
+	it, and 'args' should never be emtpy anyway.  (Reported by Stefan
+	Reich <reich@wmax60.mathematik.uni-wuerzburg.de>)
+
+	* checks/Makefile.in (LIBS): Removed -lobjc, added LIBOBJC, made
+	it conditional on NeXT cc test from configure.in.  
+
+	* configure.in:	Added LIBOBJC substitution.
+
+	* collstd.m: Added missing semicolon to coll_NeXT_cc_version line.
+
+	* Storage.m (_makeRoomForAnotherIfNecessary): Added assert()
+	checking for non-zero maxElements.
+
+	* Makefile.in (install): Changed HDRS to INSTALLHDRS.  (Reported
+	by Matthias Klose <doko@cs.tu-berlin.de>)
+
+Mon May  9 18:30:05 1994  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* Storage.m (initCount:elementSize:description):  Make sure
+	maxElements >= 1.  (Reported by Paul Kunz.)
+
+	These from Kresten Thorup:
+	* collstd.[hm] (#if NeXT): Added @interface/@end.  Added
+	-shouldNotImplement:.
+	* configure.in, collstd.m:  Changed NX_COMPILER_RELEASE to
+	NX_CURRENT_COMPILER_RELEASE.
+
+Sun May  8 19:40:40 1994  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* configure.in: Added check for nested function support.
+	* config.nested.c:  Created.
+
+	* Makefile.in: Removed "-include Makefile.depend".  Removed
+	"-include Makefile.local".
+
+	* List.m (removeObjectAt:): Now returns old object.  (Reported by
+	Paul Kunz.)
+
+Fri May  6 11:11:17 1994  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* collstd.[hm]: Defined coll_NeXT_cc_version.
+	* checks/test11.m:  Modified from NXStringTable test code provided
+	by <fedor@focus.Colorado.EDU>
+	* checks/Makefile.in:  Added test11.m, NXStringTable.example.
+	* Makefile.in:  Added support for NXStringTable_scan.lex
+	* eltfuncs.m (elt_get_encoding):  Fixed bug by adding char_ptr_u.
+	(__init_comp_func_hashtable():  Passing elt_{hash,compare}... to
+	coll_hash_new.
+
+Thu May  5 09:47:08 1994  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* Makefile.in, configure.in: Automatically check if using NeXT's
+	compiler.  If so, add -cpp-traditional, don't compile or install
+	NeXT compatibility classes.  If not, compile and install NeXT
+	compatibility classes.  MAKEDEFINES now includes $(INCLUDEFLAGS).
+
+	* StringTable*: Changed name to NXStringTable*.
+
+	* collstd.[hm]:  #ifdef NeXT -compare:.  Added.
+
+	* eltfuncs.m:  Changed to use coll/collhash.[hc] instead of
+	objc/hash.[hc].  Added (void*) casts to __objcx[mc]alloc.
+
+Tue May  3 14:09:03 1994  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* Makefile.in: Removed Makefile.depend target.
+
+Tue Apr 19 17:55:45 1994  Andrew McCallum  (mccallum@zebra.cs.rochester.edu)
+
+	* Storage.m (initCount:elementSize:description, setNumSlots):
+	Clear the allocated memory.  Patch contributed by Adam Fedor
+	<fedor@focus.Colorado.EDU>
+
+	* List.m (addObject:): Now calls insertObject:at:, as does NeXT's.
+	(removeLastObject):  Now calls removeObjectAt:, as does NeXT's.
+
+	The following are minor changes to enable compilation with
+	NeXTSTEP 3.3 cc.  Thanks to Kresten Krab Thorup.
+
+	* Collection.m (allocCopy): #ifdef NeXT object_copy takes 2 args.
+	* DelegateList.m (+initialize):  Added.
+	* eltfuncs.m: Define _C_ATOM.  Fix hash function types.  #ifdef
+	NeXT add definitions for assert, objc_fatal, __objc_xmalloc,
+	__objc_xcalloc. 
+
+Sat Feb 26 11:39:26 1994  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* DelegateList.[hm] (delegateListCollection):  Changed name from
+	delegateListList.  Changed because what's returned is not a List.
+	(delegateListAddObjectIfAbsent:)  Created.
+
+Fri Jan 21 13:29:48 1994  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* Collection.m (safeWithElementsCall:,
+	safeWithElementsCall:whileTrue:): Removed extra -addContentsOf:.
+	(Reported by Allan Clearwaters <allan%mct.uucp@britain.eu.net>)
+
+Fri Dec 17 14:45:30 1993  Andrew McCallum  (mccallum@raccoon.cs.rochester.edu)
+
+	* List.m (insertObject:at:): Fixed bug that occured when trying to
+	insert at index zero on an empty list.  (Reported by Paul Kunz)
+
+Tue Nov 16 18:40:12 1993  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* Collecting.h, Collection.m, *.m: Renamed -includesSameContents:
+	to -contentsEqual:.  "Equal" reminds the programmer that "isEqual"
+	is called on content objects.  I think "Same" is used by Brad
+	Cox's code to mean something different from "isEqual".  Later we
+	could add "contentsSame:" if it proves useful.  Don't use
+	"includes" because programmers might think that we are talking
+	about a subset operation here---no this method tests for complete
+	membership equality.
+	IndexedCollecting.h, IndexedCollection.m:  Renamed
+	-includesSameContentsInOrder: to -contentsEqualInOrder:.
+
+	Collection.m (isEqual:): Removed.  Now we just let Object take
+	care of equality testing.  If you want to test equality of
+	contents, use -hasEqualContents:.
+
+Thu Nov 11 17:01:37 1993  Andrew McCallum  (mccallum@llama.cs.rochester.edu)
+
+	* coll/KeyedCollecting.h, KeyedCollection.m: Changed
+	-insertObject:atKey: to putObject:atKey:.  In KeyedCollection
+	"insert" doesn't really insert.  If there already an object at
+	that key, it replaces.  But we can't use replace because there
+	might not be an object at that key yet.  "Insert" was a bad name
+	because the method replaces an element if there already is one at
+	that key.  "Put" is different from "replace" because "put" can
+	place elements at keys that don't already have elements associated
+	with them.  This naming scheme also has the advantage that we can
+	later use "insertObject:atKey: for a collection that allows
+	multiple elements at a single key.
+
+	* Makefile.in, coll/collstd.h, collstd.m:  Moved version
+	information from version.c to collstd files.
+	(version.c):  Removed.
+
+	* Time.m:  (indexOf...Name, nameOf...Index):  Implemented.
+
+Wed Nov 10 13:36:06 1993  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* Collection.m: (-includesSameContents:):  Added a check for same
+	comparisonFunction.
+	(-compare:):  Implemented.
+
+	* IndexedCollection.m (-indexOfFirstIn:, -indexOfFirstNotIn:):
+	Implemented. 
+
+	* readme.texi, news.texi: Created.  Changed Makefile to	support
+	these. 
+
+	* checks, checks/Makefile.in: Renamed tests directory to checks.
+	Created autoconf Makefile.in for checks directory.
+
+Wed Nov  3 10:27:52 1993  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* coll/Collecting.h: (newEnumState, freeEnumState:)  Added.  Now
+	we can avoid memory leaks.  Later we can built an Iterator class
+	on top of these methods if we like.
+	*.m: Make use of new enum state methods.
+
+	* IndexedCollection.m (indexOfFirstDifference:)  Implemented.
+
+Tue Nov  2 13:40:34 1993  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* RBTree.m (removeElement:,_RBTreeDeleteFixup): Added.  RBTree
+	should now be operational.
+
+	* BinaryTree.m, RBTree (nilNode): Added.  Now using this sentinal
+	to make a few operations more efficient.
+
+Mon Nov  1 15:07:48 1993  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* *.m: Made sure all function pointers are dereferenced when
+	called. 
+
+	* SplayTree.m (-splayNode:, -sortAddElement:byCalling:,
+	-insertElement:after:, -insertElement:before:,
+	-insertElement:atIndex:, -removeElement:,
+	-_doSplayOperationOnNode:): Added.  SplayTree should now be
+	operational. 
+
+	* eltfuncs.m (elt_fprintf_elt): Now passing "l" when fprintf'ing
+	...  long elements.
+
+	* coll/CollectionPrivate.h (RETURN_BY_CALLING_EXCEPTION_FUNCTION):
+	No longer uses __builtin_apply and __builtin_return unnecessarily.
+
+Sun Oct 31 12:34:55 1993  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* BinaryTree.m (-leftRotateAroundNode:, -rightRotateAroundNode:):
+	Fixed bug occurring when rotation child is nil.
+	(rootNode): Added.
+
+	* Collection.m, KeyedCollection.m, IndexedCollection.m
+	(-...Object:...):  Added CHECK_CONTAINS_OBJECTS_ERROR;
+
+Fri Oct 29 14:22:41 1993  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* KeyedCollection.m, Collection.m: Removed use of LAMBDA().
+
+Thu Oct 28 15:44:23 1993  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* coll/Time.h:  Removed <Ordering> from @interface line.
+
+Tue Oct 26 8:32:48 1993  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* Released version 931026.
+
+Mon Oct 25 12:41:28 1993  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* coll/*Collecting.h:  Removed shallowCopy... methods with weird
+	options.  These can be done easily and more flexibly with
+	enumerations. 
+
+	* coll/*Collecting.h, *Colletion.m: Removed definition and use of
+	COLL_NO_ELEMENT, COLL_NO_OBJECT, COLL_NO_KEY, COLL_NO_INDEX.
+	Added ...ifAbsentCall: methods to replace this functionality.
+
+	* coll/Collecting.h, Collection.m: ...AllOccurrences... methods
+	now return self. 
+
+Thu Oct 21 17:41:49 1993  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* libcoll.texi: Created.
+
+Tue Oct 19 10:25:34 1993  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* coll/Collecting.h: Changed method name -freeContents to
+	-freeObjects.  Both names are pretty clear, and the later has the
+	advantage of compatibility with NeXT.  
+
+	* coll/Collecting.h: Changed method name -containsObjects to
+	-contentsAreObjects.  The previous name could be interpretted as
+	testing whether or not the collection was empty; in fact this
+	method just tests whether or not the collection was initialized to
+	hold objects (i.e.  initEncoding:@encode(id)).
+
+	* coll/collstd.h:  Added #define's for defining nested functions
+	in the argument position:  LAMBDA, LAMBDA_VOID_PERFORM,
+	LAMBDA_ID_PERFORM, LAMBDA_BOOL_PERFORM.
+
+	* coll/Collecting.h, KeyedCollecting.h, IndexedCollecting.h:
+	Removed many methods for various combinations of perform:,
+	perform:with:, perform:in, perform:in:with:.  All these can now be
+	replaced with ...ByCalling: methods now that we can easily define
+	nested functions with the LAMBDA macro's.  These methods really
+	ballooned the size of the protocols, and they still didn't provide
+	all the potentially useful conbinations.  This new scheme is far
+	more flexible.  I left the -makeObjectsPerform: and
+	-makeObjectsPerform:with: for compatibility with NeXT.
+
+Mon Oct 18 15:18:01 1993  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* eltfuncs.m: Fixed overflow bug in compare functions.
+
+Fri Oct  8 11:47:56 1993  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* List.m (replaceObjectAt:): Now returns oldObject.
+	(makeObjectsPerform:with:): Now uses perform:with:.
+	Removed -sortUsingMethod:inObject:.
+
+	* coll/SortedArray.h: removed.
+
+Thu Sep 30 10:52:14 1993  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* List.m (makeObjectsPerform:, makeObjectsPerform:with:):  Removed
+	dependence on _makeObjects...:reverseOrder:.  Using #if instead.
+
+	* Bag.m (removeElement:occurrences:):  Added.  Bag will now cause
+	error if you try to remove an element that's not there, or not
+	there enough times.
+
+Tue Sep 28 11:49:42 1993  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* List.m, Storage.m:  Now use objc_malloc/OBJC_MALLOC and friends
+	instead of malloc and friends.
+
+	* Makefile.in, configure.in:  Created.  Now libcoll works with
+	autoconf.  Also made some changes to *.m to take advantage of
+	autoconf.
+
+	* collstd.m:  Changed definition of free().  (thanks to
+	krab@iesd.auc.dk) 
+
+Mon Sep 27 09:59:25 1993  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* Bag.m (-uniqueCount): Added.
+
+	* HashTable.m (-initKeyDesc:valueDesc:capacity:)  Increased
+	portability for {long, unsigned} ints.
+
+	* IndexedCollecting.h, IndexedCollection.m:  Added
+	-safe...InReverse methods. 
+
+	* List.m (copy):  Added.  In order to force -shallowCopy for
+	compatibility with NeXT.
+
+	* collhash.[hc] (coll_hash_empty): Added.
+
+	* Collecting.h, Collection.m:  (-safe...) Added these enumerators
+	for doing enumerations while changing the contents of the
+	collection.
+
+	* Collecting.h, Collection.m:  (-initWithContentsOf:) Added.  This
+	allows for certain efficiencies, like init'ing an Array with the
+	needed capacity from the start.
+
+Sat Sep 25 12:20:18 1993  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* Collection.m, KeyedCollection, IndexedCollection.m:  Extracted
+	message -comparisonFunction from inside loops to improve
+	efficiency. 
+
+	* Collecting.h, Collection.m:  Removed the -shallowCopySelect...,
+	etc methods and replaced them with -withElementsTrueBy..., etc
+	methods.  These shallowCopy methods make lots of sense in
+	SmallTalk where garbage collection makes enumeration on
+	temporary collections useful for iteration, but in ObjC I think
+	methods with a little more flexibility would be more helpful.  I
+	also wanted to add more options to those {select,reject,collect}
+	methods: 1) the option of deep or shallow copies, 2) the option of
+	changing the class of the new copy.  But if done in the old
+	framework this would have exploded the number of methods.  The new
+	framework allows all the old functionality, plus the new options,
+	plus the option to do something useful without creating a new
+	collection. 
+
+Tue Sep 21 11:52:46 1993  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* *.m:  Added -emptyCopy based on -allocCopy.  Subclasses override
+	to take care of instance vars that must change.
+
+	* Collecting.h, Collection.m:  Changed -addCount:... to
+	-addObjectsCount:... and -addElementsCount:...
+
+Mon Sep 20 17:05:10 1993  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* *.[hm]:  Added code for archiving:  -write:, writeInit:,
+	writeContents:, -read:, readInit:, readContents:.  I'm not sure
+	this division of labor is the best.  I'm open to suggestions for
+	different implementations. 
+
+	* *.[hm]:  Changed all instances of the word "description" to
+	"encoding".  Objective-C already uses @encode() for these things.
+	We shouldn't introduce new vocabulary for refering to the same
+	thing. 
+
+	* *.[hm]:  Removed methods that allowed specification of
+	comparison function independent of encoding.  This will allow us
+	to archive the comparison function by archiving the encoding.
+	Most people will be able to get custom comparisons by overriding
+	-compare:.  If you really, really need some new weird comparisons
+	for non-objects, you can still subclass the collection and
+	override -comparisonFunction.  If people think that we will want
+	to want custom comparisons of non-objects *very often*, then we
+	come up with another scheme that still allows meaningful archiving
+	of comparison functions.
+
+Sun Sep 19 19:30:02 1993  Andrew McCallum  (mccallum@swan.cs.rochester.edu)
+
+	* coll/eltfuncs.[hm]:  Created.  Moved functions for manipulating
+	elt's from CollectionPrivate.h to eltfuncs.h.  This makes elt a
+	little more separate from libcoll, so others can use it too.  I
+	changed the prefix on the names accordingly from coll_ to elt_.
+	Also, added function for getting encoding from comparison
+	function.  Also, declared all elt_compare_ and elt_hash_ functions
+	extern.
+
+Thu Sep  9 09:49:29 1993  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* LinkedListEltNode.[hm], BinaryTreeEltNode.[hm],
+	RBTreeEltNode.[hm]:  Created these files and moved EltNode code
+	into them.  This cleanly separates the basic LinkedList code from
+	the EltNodeCollector stuff (and similarly for BinaryTree and
+	RBTree).  The EltNode stuff strikes me as being a little messy;
+	with this separation we can easily replace it later with something
+	cleaner (if we can think of something cleaner).
+
+	* elt.h, *.m:  Changed elt union names from *_t to *_u, following
+	suggestion of Burchard:  *_t should be reserved for type names.
+
+Tue Aug 31 11:40:29 1993  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* Storage.[hm], List.[hm]:  Removed many extra features that
+	aren't in the NeXT implementations.  Our goal for these NeXT-based
+	objects should be compatibility, not kitchen-sink features.  Let
+	people add features in Categories if they need them.
+
+	* Storage.[hm]:  Fixed return type for -removeLastElement to match
+	NeXT.  Unfortunately this conflicts with the IndexedCollecting
+	declaration (NeXT's returns self, IndexedCollecting returns the
+	removed element).  I really think methods that remove elemements
+	should return that element.  We're just going to have to live with
+	this conflict.
+
+	* Storage.[hm]:  Changed declaration of instance var 'dataPtr'
+	from void** to void*, to match NeXT.
+
+	* IndexedCollecting.h, IndexedCollection.m:  Added -sortContents;
+
+Thu Aug 26 17:47:59 1993  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* List.m:  Changed default order of -makeObjectsPerform... and
+	fixed comment to match NeXTSTEP reality.
+
+Wed Jul 10 14:38:23 1993  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* BinaryTree.m, RBTree.m, EltNodeCollector.[hm]:  Created.
+
+Wed Jun  2 11:48:08 1993  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* IndexedCollecting.h:  Added
+		- successorOfObject: anObject;
+		- predecessorOfObject: anObject;
+		- (elt)	successorOfElement: (elt)anElement;
+		- (elt) predecessorOfElement: (elt)anElement;
+
+	* BinaryTree.h, RBTree.h:  Created.
+
+Mon May 31 13:33:42 1993  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* Time.[hm]:  Threw a Time object I wrote a while ago into the
+	.tar file.  Maybe someone will find it useful.  
+
+	* IndexedCollecting.h, IndexedCollection.m:  Added methods:
+	- (unsigned) indexOfFirstDifference: (id <IndexedCollecting>)aColl;
+	- (unsigned) indexOfFirstIn: (id <Collecting>)aColl;
+	- (unsigned) indexOfFirstNotIn: (id <Collecting>)aColl;
+	They fit well with desired functionality for Strings, but may also
+	be generally useful.
+
+	* Created preliminary String class.  It's very preliminary; I just
+	want to see how it will fit with IndexedCollecting.
+
+	* Overhauled instance variables in heirarchy.  Removed all 
+	instance variables from abstract superclasses.  This makes
+	subclassing an abstract superclass a bit more of a pain, but it
+	helps keep memory requirements down, especially for String,
+	LinkList and all IndexedCollections.
+
+Sat May 29 11:27:01 1993  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* IndexedCollection.m: Made cast of void* to unsigned more
+	portable.
+
+Fri May 28 17:00:14 1993  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* IndexedCollecting.h, IndexedCollection.m:  Added
+	-insertContentsOf:atIndex: modified from Kresten Krab Thorup.
+
+	* Collecting.h, Collection.m:  Added {Object,Element} to inject,
+	detect, max and min methods.
+
+Wed May 26 12:20:21 1993  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* Overhauled error generation.  Changed #define's so error
+	generation is easier to change again later, if necessary.  Error
+	methods now have forwarding capability.  See CollectionPrivate.h,
+	Collection.m, IndexedCollectionPrivate.h, IndexedCollection.m.
+
+	* *.m:  Fixed many small bugs found with -Wall.
+
+	* Created Heap object.
+
+	* Collection.m:  Fixed -includesSameContents.
+
+	* Collecting.h, Collection.m:  Added -isSubsetOf: as written by
+	Kresten Krab Thorup.  Removed -includesSubsetOf:.
+
+Tue May 25 14:14:33 1993  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* Removed ComparedCollecting protocol.  Its only purpose was to
+	allow the user to manage a comparison function---this was silly,
+	though, because there already was a comparison function inherited
+	from Collection!  No need to have two of them.  Now that there is
+	a general interface for user-specified comparison functions, we 
+	don't need the ComparedCollecting methods.  This is a big help
+	because we no longer have the problem of trying to combine a
+	ComparedCollection class and Array class with some ugly multiple
+	inheritance issues.  One disadvantage, however, is that it is 
+	slightly more complicated to specify a comparator that is a
+	selector. 
+
+	* Overhauled comparison and hash functions.  More changes than I
+	want to describe in detail here...  1) Created temporary versions
+	of hash.[hc] that do what I want, hopefully Kresten's new versions
+	of hash.[hc] will do something like this.  Created collhash.[hc].
+	2) Added -init... methods that allow the users to specify their own
+	comparison and hash functions instead of accepting the defaults.
+
+Mon May 24 10:46:21 1993  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* Collecting.h, Collection.m: Removed -initWith:,... and
+	-initDescription:with:,... methods.  I don't want to add ..with:
+	version of all -init... methods.  People can use addCount,...
+	instead. 
+
+	* Created IdListLink.[hm].  Changed -linkClass in ListedList.m to
+	return [IdListLink class] if LinkedList contains objects.
+
+	* Collecting.h, elt.h: Moved definition of elt union to
+	<coll/elt.h> 
+
+	* List.m:  -isEqual: now checks [List count] at beginning.
+
+	* List.m:  -empty no longer realloc()'s. (for compatibility with
+	NeXT.)
+
+	* List.[hm]:  Added 
+	- makeObjectsPerform:(SEL)aSel reverseOrder:(BOOL)flag;
+	- makeObjectsPerform:(SEL)aSel with:anObject reverseOrder:(BOOL)flag;
+	and changed -makeObjectsPerform: and -makeObjectsPerform:with: to
+	call them.  This gives the option of compatibility with
+	pre-NeXTSTEP 3.0 List's.
+
+Sat May 22 13:53:25 1993  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* Collection.m, Collecting.h: Changed type of initialArg from
+	void* to elt in inject.. methods. 
+
+Fri May 21 18:52:03 1993  Andrew McCallum  (mccallum@vein.cs.rochester.edu)
+
+	* First alpha release announced on gnu-objc@prep.ai.mit.edu
+

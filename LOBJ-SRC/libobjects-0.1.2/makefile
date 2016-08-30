@@ -1,0 +1,435 @@
+# @configure_input@
+#
+#  Main makefile for GNU Objective-C Class library
+#  Copyright (C) 1993,1994 Free Software Foundation, Inc.
+#
+#  Written by:	R. Andrew McCallum <mccallum@cs.rochester.edu>
+#  Dept. of Computer Science, U. of Rochester, Rochester, NY  14627
+#
+#  This file is part of the GNU Objective-C Class library.
+#
+#  This library is free software; you can redistribute it and/or
+#  modify it under the terms of the GNU Library General Public
+#  License as published by the Free Software Foundation; either
+#  version 2 of the License, or (at your option) any later version.
+#
+#  This library is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
+#  Library General Public License for more details.
+#
+#  You should have received a copy of the GNU Library General Public
+#  License along with this library; if not, write to the Free
+#  Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ 
+
+SHELL = /Unix/bash/bash.exe
+
+#### Start of system configuration section. ####
+
+srcdir = .
+VPATH = .
+
+CC = gcc
+RANLIB = ar s
+INSTALL = /Unix/bin/install
+INSTALL_PROGRAM = /Unix/bin/install
+INSTALL_DATA = /Unix/bin/install
+AR = ar
+ARFLAGS = rc
+MAKEINFO = makeinfo
+TEXI2DVI = texi2dvi
+LEX = flex
+LFLAGS =
+     
+DEFS =
+     
+# All these are optional.  You can redifine CFLAGS, CPPFLAGS and
+# INCLUDEFLAGS on the command line however you like.
+CFLAGS = -Wall -Wno-implicit -O2
+CPPFLAGS = 
+INCLUDEFLAGS =
+
+prefix = /install/usr/local
+exec_prefix = /install/usr/local
+
+# Installation locations
+libdir = $(exec_prefix)/lib
+includedir = $(prefix)/include
+infodir = $(prefix)/info
+
+#### End of system configuration section. ####
+
+# The gcc version required to compile the library.
+OBJECTS_GCC_VERSION = 2.6.1
+
+# The version number of this release.
+OBJECTS_VERSION = 0.1.2
+OBJECTS_FTP_MACHINE = alpha.gnu.ai.mit.edu
+OBJECTS_FTP_DIRECTORY = pub/gnu
+
+NEXT_NEXT_INCLUDES = -I/usr/include
+OBJECTS_NEXT_INCLUDES = -I$(srcdir)/objects/next-include
+NEXT_INCLUDES = $(OBJECTS_NEXT_INCLUDES)
+
+ALL_INCLUDE_FLAGS = -I$(srcdir) $(NEXT_INCLUDES) $(INCLUDEFLAGS)
+ALL_CPPFLAGS = $(ALL_INCLUDE_FLAGS) $(CPPFLAGS)
+ALL_CFLAGS = $(CFLAGS)
+ALL_OBJCFLAGS = $(CFLAGS) -Wno-protocol
+
+# definitions to be passed to subdir Makefile's
+MAKEDEFINES = CC='$(CC)' CFLAGS='$(CFLAGS)' CPPFLAGS='$(CPPFLAGS)' \
+INCLUDEFLAGS='$(INCLUDEFLAGS)' DEFS='$(DEFS)'
+
+.SUFFIXES: .m
+.m.o:
+	$(CC) -c $(ALL_CPPFLAGS) $(DEFS) $(ALL_OBJCFLAGS) $<
+.c.o:
+	$(CC) -c $(ALL_CPPFLAGS) $(DEFS) $(ALL_CFLAGS) $<
+
+GNU_MFILES = \
+Array.m \
+AutoreleasePool.m \
+AutoreleaseStack.m \
+Bag.m \
+BinaryCoder.m \
+BinaryTree.m \
+BinaryTreeEltNode.m \
+BinaryTreeNode.m \
+CircularArray.m \
+Coder.m \
+Collection.m \
+ConnectedCoder.m \
+Connection.m \
+DelegatePool.m \
+Dictionary.m \
+EltNodeCollector.m \
+GapArray.m \
+Heap.m \
+IndexedCollection.m \
+Invocation.m \
+KeyedCollection.m \
+LinkedList.m \
+LinkedListEltNode.m \
+LinkedListNode.m \
+Lock.m \
+Magnitude.m \
+MappedCollector.m \
+MemoryStream.m \
+ObjectRetaining.m \
+Port.m \
+Proxy.m \
+Queue.m \
+Random.m \
+RBTree.m \
+RBTreeEltNode.m \
+RBTreeNode.m \
+RNGAdditiveCongruential.m \
+RNGBerkeley.m \
+RetainingNotifier.m \
+Set.m \
+SocketPort.m \
+SplayTree.m \
+Stack.m \
+StdioStream.m \
+Stream.m \
+TextCoder.m \
+Time.m \
+stdobjects.m \
+mframe.m \
+objc-gnu2next.m \
+eltfuncs.m
+
+NeXT_MFILES = \
+HashTable.m \
+List.m \
+NXStringTable.m \
+Storage.m
+
+GNUSTEP_MFILES = \
+NSArray.m
+
+GNU_CFILES = \
+collhash.c \
+objc-malloc.c \
+o_vscanf.c
+
+NeXT_CFILES = \
+NXStringT_scan.c \
+zone.c
+
+GNU_OTHER_SRCFILES = 
+
+NeXT_OTHER_SRCFILES = \
+NXStringT_scan.l 
+
+GNU_OBJS = $(GNU_MFILES:.m=.o) $(GNU_CFILES:.c=.o)
+NeXT_OBJS = $(NeXT_MFILES:.m=.o) $(NeXT_CFILES:.c=.o)
+
+GNU_HEADERS = \
+objects/Array.h \
+objects/AutoreleasePool.h \
+objects/AutoreleaseStack.h \
+objects/ArrayPrivate.h \
+objects/Bag.h \
+objects/BinaryCoder.h \
+objects/BinaryTree.h \
+objects/BinaryTreeEltNode.h \
+objects/BinaryTreeNode.h \
+objects/CircularArray.h \
+objects/CircularArrayPrivate.h \
+objects/Coder.h \
+objects/Coding.h \
+objects/Collecting.h \
+objects/Collection.h \
+objects/CollectionPrivate.h \
+objects/ConnectedCoder.h \
+objects/Connection.h \
+objects/DelegatePool.h \
+objects/Dictionary.h \
+objects/EltNodeCollector.h \
+objects/EltNode-h \
+objects/EltNode-m \
+objects/GapArray.h \
+objects/GapArrayPrivate.h \
+objects/Heap.h \
+objects/IndexedCollecting.h \
+objects/IndexedCollection.h \
+objects/IndexedCollectionPrivate.h \
+objects/InvalidationListening.h \
+objects/Invocation.h \
+objects/KeyedCollecting.h \
+objects/KeyedCollection.h \
+objects/LinkedList.h \
+objects/LinkedListEltNode.h \
+objects/LinkedListNode.h \
+objects/Lock.h \
+objects/Locking.h \
+objects/Magnitude.h \
+objects/MappedCollector.h \
+objects/MemoryStream.h \
+objects/ObjectRetaining.h \
+objects/Ordering.h \
+objects/Port.h \
+objects/Proxy.h \
+objects/Queue.h \
+objects/RBTree.h \
+objects/RBTreeEltNode.h \
+objects/RBTreeNode.h \
+objects/RNGAdditiveCongruential.h \
+objects/RNGBerkeley.h \
+objects/Random.h \
+objects/RandomGenerating.h \
+objects/Retaining.h \
+objects/RetainingNotifier.h \
+objects/Set.h \
+objects/SocketPort.h \
+objects/SplayTree.h \
+objects/Stack.h \
+objects/StdioStream.h \
+objects/Stream.h \
+objects/TextCoder.h \
+objects/Time.h \
+objects/ValueHolding.h \
+objects/collhash.h \
+objects/config.h \
+objects/elt.h \
+objects/eltfuncs.h \
+objects/mframe.h \
+objects/objc-gnu2next.h \
+objects/objc-malloc.h \
+objects/objects.h \
+objects/stdobjects.h 
+
+NeXT_HEADERS = \
+objects/next-include/objc/HashTable.h \
+objects/next-include/objc/List.h \
+objects/next-include/objc/NXStringTable.h \
+objects/next-include/objc/Storage.h \
+objects/next-include/objc/zone.h
+
+INSTALL_HEADERS = $(GNU_HEADERS) $(NeXT_HEADERS)
+INSTALL_OBJS = $(GNU_OBJS) $(NeXT_OBJS)
+
+DIST_FILES = \
+README readme.texi \
+ANNOUNCE announce.texi \
+INSTALL install.texi \
+TODO todo.texi \
+NEWS news.texi \
+CREDITS README.ULTRIX \
+COPYING COPYING.LIB DISCUSSION ChangeLog \
+Makefile.in configure configure.in objects/config.h.in \
+config.guess config.nested.c config.nextcc.h config.nextrt.m \
+mkinstalldirs.sh install.sh \
+version.texi \
+libobjects.info libobjects.texi \
+texinfo.tex \
+$(GNU_MFILES) $(NeXT_MFILES) \
+$(GNU_CFILES) $(NeXT_CFILES) \
+$(GNU_HEADERS) $(NeXT_HEADERS) \
+$(GNU_OTHER_SRCFILES) $(NeXT_OTHER_SRCFILES) 
+
+all: objects.a objects.lib
+
+objects.a: $(INSTALL_OBJS)
+	$(AR) $(ARFLAGS) objects.a $(INSTALL_OBJS)
+	$(RANLIB) objects.a
+
+objects.lib: objects.a
+	emxomf -o objects.lib objects.a
+
+install: installdirs all
+	cp objects.a $(libdir)/objects.a
+	cp objects.lib $(libdir)/objects.lib
+	$(RANLIB) $(libdir)/objects.a
+	for file in $(INSTALL_HEADERS); do \
+	  cp $$file $(includedir)/$$file ; \
+	done
+	cp libobjects.info $(infodir)
+
+installdirs:
+	$(srcdir)/mkinstalldirs.sh $(libdir) $(infodir) \
+	 $(includedir)/objects \
+	 $(includedir)/objects/next-include \
+	 $(includedir)/objects/next-include/objc \
+	 $(includedir)/objects/next-include/foundation
+
+uninstall:
+	rm -f $(libdir)/objects.a
+	rm -rf $(includedir)
+	rm -f $(infodir)/libobjects.info
+
+check: objects.a
+	cd checks; $(MAKE) -$(MAKEFLAGS) $(MAKEDEFINES)
+
+depend:
+	rm -f $(srcdir)/Makefile.depend
+	$(CC) $(ALL_INCLUDE_FLAGS) -M $(SRCS) > $(srcdir)/Makefile.depend
+
+NXStringT_scan.c: NXStringT_scan.l
+	$(LEX) $(LFLAGS) -t NXStringT_scan.l > NXStringT_scan.temp
+	sed 's/yy/NXlex_/g' < NXStringT_scan.temp > NXStringT_scan.c
+	$(RM) -f NXStringT_scan.temp
+
+# remove this special case?
+# turn off warnings while compiling NXStringT_scan.c
+NXStringT_scan.o: NXStringT_scan.c
+	$(CC) -c $(ALL_CPPFLAGS) $(DEFS) $(ALL_CFLAGS) -w NXStringT_scan.c
+
+objects/stdobjects.h: Makefile.in
+	rm -f tmp-stdobjects.h
+	sed -e \
+	's/#define OBJECTS_VERSION .*/#define OBJECTS_VERSION $(OBJECTS_VERSION)/'\
+		< objects/stdobjects.h >tmp-stdobjects.h
+	rm $(srcdir)/objects/stdobjects.h
+	sed -e \
+	's/#define OBJECTS_GCC_VERSION .*/#define OBJECTS_GCC_VERSION $(OBJECTS_GCC_VERSION)/'\
+		< tmp-stdobjects.h > $(srcdir)/objects/stdobjects.h 
+
+stdobjects.m: objects/stdobjects.h
+
+version.texi: Makefile
+	rm -f $(srcdir)/version.texi
+	echo '@set OBJECTS_VERSION' $(OBJECTS_VERSION) \
+		> $(srcdir)/version.texi
+	echo '@set OBJECTS_GCC_VERSION' $(OBJECTS_GCC_VERSION) \
+		>> $(srcdir)/version.texi
+	if [ $(OBJECTS_FTP_MACHINE) ]; then \
+		echo '@set OBJECTS_FTP_MACHINE' $(OBJECTS_FTP_MACHINE) \
+		>> $(srcdir)/version.texi; fi
+	if [ $(OBJECTS_FTP_DIRECTORY) ]; then \
+		echo '@set OBJECTS_FTP_DIRECTORY' $(OBJECTS_FTP_DIRECTORY) \
+		>> $(srcdir)/version.texi; fi
+
+info: libobjects.info TODO INSTALL NEWS README ANNOUNCE
+dvi: libobjects.dvi
+libobjects.dvi: libobjects.texi version.texi
+	@echo Sorry, libobjects/texinfo.tex still needs work.
+	:$(TEXI2DVI) $(srcdir)/libobjects.texi
+
+libobjects.info: libobjects.texi todo.texi version.texi
+	$(MAKEINFO) $(srcdir)/libobjects.texi
+TODO: todo.texi version.texi
+	$(MAKEINFO) -o TODO -D TODO_ONLY \
+	--no-header --no-split $(srcdir)/todo.texi
+INSTALL: install.texi version.texi
+	$(MAKEINFO) -o INSTALL -D INSTALL_ONLY \
+	--no-header --no-split $(srcdir)/install.texi
+README: readme.texi version.texi
+	$(MAKEINFO) -o README -D README_ONLY \
+	--no-header --no-split $(srcdir)/readme.texi
+ANNOUNCE: announce.texi version.texi news.texi
+	$(MAKEINFO) -o ANNOUNCE -D ANNOUNCE_ONLY \
+	--no-header --no-split $(srcdir)/announce.texi
+NEWS: news.texi version.texi
+	$(MAKEINFO) -o NEWS -D NEWS_ONLY \
+	--no-header --no-split $(srcdir)/news.texi
+ADVERTISEMENT: advertisement.texi version.texi
+	$(MAKEINFO) -o ADVERTISEMENT -D ADVERTISEMENT_ONLY \
+	--no-header --no-split $(srcdir)/advertisement.texi
+Makefile: Makefile.in config.status
+	$(SHELL) config.status
+config.status: configure
+	$(SHELL) $(srcdir)/configure --no-create
+configure: configure.in
+	cd $(srcdir); autoconf
+
+TAGS: $(DIST_FILES)
+	etags $(DIST_FILES)
+
+mostlyclean:
+	rm -f  core \
+	*~ \
+	objects/*~ \
+	objects/next-include/*~ \
+	objects/next-include/foundation/*~ \
+	objects/next-include/objc/*~
+
+clean: mostlyclean
+	rm -f objects.a *.o objects.lib
+	rm -f libobjects.dvi libobjects.aux libobjects.log \
+	libobjects.toc libobjects.cl \
+	libobjects.cp libobjects.cps libobjects.fn libobjects.fns \
+	libobjects.ky libobjects.pg libobjects.pr libobjects.tp \
+	libobjects.vr 
+
+distclean: clean
+	rm -f Makefile config.status config.log config.cache
+
+realclean: distclean
+	rm -f TAGS configure \
+		libobjects.info version.texi README TODO INSTALL NEWS ANNOUNCE
+
+dist: $(DIST_FILES)
+	echo libobjects-$(OBJECTS_VERSION) > .fname
+	rm -rf `cat .fname`
+	mkdir `cat .fname`
+	mkdir `cat .fname`/objects
+	mkdir `cat .fname`/objects/next-include
+	mkdir `cat .fname`/objects/next-include/objc
+	mkdir `cat .fname`/objects/next-include/foundation
+	# previously did this: -ln (DIST_FILES) `cat .fname`
+	for file in $(DIST_FILES); do \
+	  ln $$file `cat .fname`/$$file ; \
+	done
+	touch `cat .fname`/Makefile.local
+	touch `cat .fname`/Makefile.depend
+	cd checks; $(MAKE) $(MAKEFLAGS) dist
+	cd examples; $(MAKE) $(MAKEFLAGS) dist
+	tar -chvf `cat .fname`.tar `cat .fname`
+	gzip `cat .fname`.tar
+	rm -rf `cat .fname` .fname
+
+diff:
+	zcat libobjects-$(OLD_OBJECTS_VERSION).tar.gz | (cd /tmp; tar -xf -)
+	zcat libobjects-$(OBJECTS_VERSION).tar.gz | (cd /tmp; tar -xf -)
+	diff -rc2P /tmp/libobjects-$(OLD_OBJECTS_VERSION) \
+	/tmp/libobjects-$(OBJECTS_VERSION) \
+	> libobjects-$(OLD_OBJECTS_VERSION)-$(OBJECTS_VERSION).diff
+	rm -rf /tmp/libobjects-$(OLD_OBJECTS_VERSION) \
+	/tmp/libobjects-$(OBJECTS_VERSION) \
+
+include Makefile.depend
+
+include Makefile.local

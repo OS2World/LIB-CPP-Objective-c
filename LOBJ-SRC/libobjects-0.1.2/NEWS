@@ -1,0 +1,112 @@
+News about GNU Objective C Class Library
+****************************************
+
+Noteworthy changes since version `0.1.0'
+========================================
+
+   * New category: ObjectRetaining.  New classes: AutoreleasePool,
+     AutoreleaseStack.
+
+   * Bug fixes: Install next-includes properly.  New instructions in
+     README.ULTRIX.  Time.m patched for Solaris 2.4.  test12.m free fix.
+
+Noteworthy changes in version `0.1.0'
+=====================================
+
+   * Renamed the library from `libcoll' to `libobjects'.  (See the end
+     of the file `DISCUSSION' for the background on this name choice.)
+     Several file names changed to reflect this.  GNU class interfaces
+     are now included with `objects' prefix, e.g. `#include
+     <objects/BinaryTree.h>'.
+
+   * Many new classes. Pseudo-random number classes Random, RNGBerkeley
+     and RNGAdditiveCongruential.  New stream classes Stream,
+     StdioStream and MemoryStream.  New coder classes Coder, TextCoder
+     and BinaryCoder.  New network packet transmission classes Port and
+     SocketPort.  New remote object messaging classes Connection, Proxy
+     and ConnectedCoder.  New protocols Coding and Retaining.  New, but
+     unimplemented: Lock and Locking.  New but soon-to-disapppear:
+     RetainingNotifier, InvalidationListening.
+
+   * Some bug fixes:  Fixed the assert typo in Storage.m.  The Time
+     class now compiles under Solaris.  Fixed insertion bug in
+     CircularArray.  NXStringTable_scan.l can now be compiled with lex,
+     not just flex, (thanks to Adam Fedor <adam@bastille.rmnug.org>).
+     Properly detect the difference between gcc running under NEXTSTEP
+     and NeXT's cc.  Using autoconf version 2.0.  Renamed DelegateList
+     to DelegatePool.  Renamed some collection hierarchy methods for
+     better consistency.
+
+   * Some directory reorganization so that NeXT-compatible files can be
+     included in the standard way, e.g. #include <objc/List.h>.  Some
+     other NeXT-compatibility improvements: Changed `GNU' prefix to `NX'
+     in List and HashTable.  New files zone.[hc] containing dummy stubs
+     for NeXT-compatible zone functions.
+
+Noteworthy changes in verion `940524'
+=====================================
+
+   * A NeXT-compatible NXStringTable object, thanks to Adam Fedor
+     <adam@bastille.rmnug.org>.
+
+   * SplayTree and RBTree classes now operational.  More methods in Time
+     class implemented.
+
+   * Some API cleanup:  -delegateListList changed to
+     -delegateListCollection.  -includesSameContents: changed to
+     -contentsEqual:.  -insertObject:atKey: changed to
+     -putObject:atKey:.  See the ChangeLog for more detail.
+
+   * Configuration by autoconf in the self-tests directory.
+     Configuration script tests GCC nested functions.  Configuration
+     script detects NEXTSTEP and makes the appropriate adjustments,
+     including skipping the NeXT-compatibility classes.
+
+   * Bug fixes: BinaryTree rotate methods fixed.  Fixed the way
+     `ifNone:' and `ifAbsent:' functions were called.  Fixed the way
+     long elements are printed.  Added methods for preventing memory
+     leaks by unfinished enumerations: `-newEnumState' and
+     `-freeEnumState:'.  Several bug fixes in List and Storage; changes
+     for better NeXT-compability.  And more.
+
+Noteworthy changes in version `931026'
+======================================
+
+   * Installation using `./configure' and `autoconf'
+
+   * New BinaryTree and RBTree(unfinished) classes.  Rewritten
+     LinkedList class.
+
+   * A new scheme for holding non-object elements in classes that
+     require   object contents; EltNodeCollector class.
+
+   * Archiving with -write: and -read: methods.  This involved removing
+     the ability to set the comparison function independent of content
+     type.
+
+   * Removed COLL_NO_ELEMENT and friends.  Now there are no arbitrary
+     restrictions on which long int's can be stored.  Like in Smalltalk,
+     ...ifAbsentCall: methods have been added to replace this
+     functionalty.
+
+   * Added a LABMDA() macro for defining small functions in the arg
+     position.
+
+   * Removed many ...perform: methods.  Use instead the more flexible
+     ...call: methods with LABMDA().
+
+   * Renamed ...Description: methods to ...Encoding: for better use of
+     already-defined objc keyword: @encode().
+
+   * New in the Collecting protocol: Filtered enumerating instead of
+     filtered shallowCopy'ing.  Enumerations still safe when modifying
+     the contents.
+
+   * The beginnings of documentation in libcoll.texi.
+
+   * Many bug fixes.
+
+   * ...and more.
+
+   Also see the `ChangeLog' file for more detail.
+
